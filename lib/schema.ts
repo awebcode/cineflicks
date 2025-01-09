@@ -15,3 +15,5 @@ export const bep20Schema = z.object({
 });
 
 export type Bep20FormData = z.infer<typeof bep20Schema>;
+
+

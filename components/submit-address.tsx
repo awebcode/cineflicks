@@ -1,69 +1,115 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bep20Schema, type Bep20FormData } from "@/lib/schema";
 import dynamic from "next/dynamic";
-const SuccessPopup = dynamic(() => import("./common/success-popup"), {});
-export default function SubmitAddressPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+import { useSession } from "next-auth/react";
+import useTaskStore from "@/store/useTaskStore";
+import { cn } from "@/lib/utils";
+import { updateWalletAddress } from "@/actions/user-actions";
+import { toast } from "@/hooks/use-toast";
+import PendingButton from "./common/pending-button";
 
+const SuccessPopup = dynamic(() => import("./common/success-popup"), {});
+
+export default function SubmitAddressPage() {
+  const [showSuccess, setShowSuccess] = useState(false);
+  const { data: session } = useSession();
+  const { getTasksByUser, allTasks } = useTaskStore((state) => state);
+  const [isPending, startTransition] = useTransition();
   const form = useForm<Bep20FormData>({
-      resolver: zodResolver(bep20Schema),
+    resolver: zodResolver(bep20Schema),
     mode: "all",
-    defaultValues: {
-      address: "",
-    },
+    defaultValues: { address: "" },
   });
 
+  const userTasks = getTasksByUser(session?.user.id as string);
+  const completedTasks = userTasks.filter((task) => task.completed).length;
+
   async function onSubmit(data: Bep20FormData) {
-    setIsSubmitting(true);
     try {
-      // Handle form submission here
-      console.log(data);
-      setShowSuccess(true);
+      startTransition(async () => {
+        try {
+          const res = await updateWalletAddress({
+            walletAddress: data.address,
+            userId: session?.user.id as string,
+          });
+
+          if (res && "error" in res && res?.error) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: res.message,
+            })
+          } else {
+            toast({
+              title: "Success",
+              description: res.message,
+            })
+            setShowSuccess(true);
+          }
+
+        } catch (error) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: (error as Error).message||"Something went wrong",
+          })
+
+        }
+      });
     } finally {
-      setIsSubmitting(false);
+      form.reset();
     }
   }
 
-  return (
-    <div className="min-h-screen bg-[#1A1614] flex items-center justify-center p-4">
-     <SuccessPopup open={showSuccess} setOpen={setShowSuccess} />
-      <div className="w-full max-w-xl mx-auto text-center space-y-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-white">
-          Submit your bep20 address
-        </h1>
+  const isDisabled = userTasks.length !== allTasks.length;
 
+  return (
+    <div className="py-20 bg-[#1A1614] flex items-center justify-center p-4">
+      <SuccessPopup open={showSuccess} setOpen={setShowSuccess} />
+      <div className="w-full max-w-xl text-center space-y-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-white">
+          Submit your BEP20 Address
+        </h1>
         <p className="text-gray-400 max-w-lg mx-auto">
-          Lorem ipsum, placeholder or dummy text used in typesetting and graphic design
-          for previewing layouts.
+          Complete all tasks to submit your address.
         </p>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <input
-              {...form.register("address")}
-              type="text"
-              placeholder="Enter your Bep20 address"
-              className="w-full px-6 py-4 bg-[#1E1E1E] border border-[#F5A64C] rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#F5A64C] focus:ring-opacity-50 transition-all"
-            />
-            {form.formState.errors.address && (
-              <p className="mt-2 text-sm text-red-500">
-                {form.formState.errors.address.message}
-              </p>
+          <input
+            {...form.register("address")}
+            id="address"
+            type="text"
+            placeholder="Enter your BEP20 address"
+            disabled={isDisabled}
+            className={cn(
+              "w-full px-6 py-4 bg-[#1E1E1E] border border-[#F5A64C] rounded-xl text-white placeholder:text-gray-500 focus:ring-2 focus:ring-[#F5A64C] transition-all",
+              { "cursor-not-allowed opacity-50": isDisabled }
             )}
-          </div>
+          />
+          {form.formState.errors.address && (
+            <p className="mt-2 text-sm text-red-500">
+              {form.formState.errors.address.message}
+            </p>
+          )}
 
-          <button
+          <PendingButton
             type="submit"
-            disabled={isSubmitting}
-            className="px-12 py-4 bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors disabled:opacity-50"
+            disabled={isPending || isDisabled}
+            className={cn(
+              "w-full md:w-auto px-12 py-4 bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors",
+              { "cursor-not-allowed opacity-50": isPending || isDisabled }
+            )}
           >
-            {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
-          </button>
+            {isPending ? "SUBMITTING..." : "SUBMIT"}
+          </PendingButton>
+
+          <p className="text-gray-400 text-lg">
+            Completed Tasks {completedTasks}/{allTasks.length}
+          </p>
         </form>
       </div>
     </div>

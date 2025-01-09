@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -29,18 +26,24 @@ model User {
   resetToken       DateTime?       @unique @default(now())
   resetTokenExpiry DateTime?
   providerId       String?         @default("credential")
-  couponCode       String?
+  couponCode       String?         @unique // Each user has a single coupon code
+  walletAddress    String?
   accounts         Account[]
   sessions         Session[]
   Authenticator    Authenticator[]
   tasks            Task[]          @relation("UserTasks")
-
+  couponUsage      CouponUsage? // Each user can have a single coupon usage record
+  influencerId     String?         @db.ObjectId
+  influencer       Influencer?     @relation(name: "InfluencerUsers", fields: [influencerId], references: [id])
+  
   @@map("users")
 }
 
 model Task {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   userId      String   @db.ObjectId
+  platform    String
+  socialUrl   String
   title       String
   url         String
   description String?
@@ -50,6 +53,31 @@ model Task {
   user User @relation("UserTasks", fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("tasks")
+}
+
+model Influencer {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  couponCode  String        @unique // Unique coupon code for each influencer
+  expireTime  DateTime      @default(now()) // Default expiry time is 1 day
+  users       User[]        @relation("InfluencerUsers") // Many-to-many relation with users
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  couponUsage CouponUsage[] // Track coupon usages for influencers
+
+  @@map("influencers")
+}
+
+model CouponUsage {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String     @db.ObjectId
+  influencerId String     @db.ObjectId
+  usedAt       DateTime   @default(now()) // When the coupon was used
+  user         User       @relation(fields: [userId], references: [id])
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+
+  @@unique([userId]) // A user can only use one coupon at a time
+  @@map("coupon_usages")
 }
 
 model Account {

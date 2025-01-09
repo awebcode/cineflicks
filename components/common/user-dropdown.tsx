@@ -20,7 +20,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ name, image, role }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="lg" className="flex items-center gap-2 px-4">
+        <Button variant="ghost" size="lg" className="flex flex-col items-center gap-2 px-4">
           <Avatar className="w-8 h-8">
             <AvatarImage src={image || ""} alt={name || "User"} />
             <AvatarFallback>{name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>

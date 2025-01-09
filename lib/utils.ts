@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import * as jose from "jose";
+import { ObjectId } from "bson";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -33,4 +34,10 @@ export const verifyJwt = async ({ token, secret }: { token: string; secret: stri
   } catch (error: any) {
     return null; // In case of verification failure
   }
+};
+
+export const generateObjectId = () => {
+  const id = new ObjectId();
+ 
+  return id.toHexString();
 };

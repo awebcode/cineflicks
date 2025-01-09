@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useActionState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -14,39 +14,109 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { commentSchema, type CommentFormData } from "@/lib/schema";
+import { createTask } from "@/actions/task-actions";
+import useTaskStore from "@/store/useTaskStore";
+import { signIn, useSession } from "next-auth/react";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import PendingButton from "../common/pending-button";
 
 interface SocialCardProps {
+  id: string | number;
   platform: string;
-  status: "completed" | "pending";
   description: string;
+  socialUrl: string;
 }
 
-export function SocialCard({ platform, status, description }: SocialCardProps) {
+export function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
+  // const [data, createTaskAction, isPending] = useActionState(createTask, null);
+  const { addTask, updateTask, getTaskById } = useTaskStore((state) => state);
+  const session = useSession();
+  const userId = session.data?.user?.id;
+  const [isPending, startTransition] = useTransition();
 
+  const router = useRouter();
   const form = useForm<CommentFormData>({
     resolver: zodResolver(commentSchema),
     mode: "all",
-    defaultValues: {
-      url: "",
-    },
+    defaultValues: { url: "" },
   });
 
-  const onSubmit = (data: CommentFormData) => {
-    console.log(data);
-    // Handle verification here
+  const onSubmit = async (data: CommentFormData) => {
+    if (!userId) return;
+
+    startTransition(async () => {
+      try {
+        const data = await createTask({
+          userId,
+          platform,
+          socialUrl,
+          url: form.getValues("url"),
+          title: `Follow Cineflicks on ${platform}`,
+        });
+        if (data && "error" in data && data?.error) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: data.message,
+          });
+          return;
+        }
+
+        if (!data) return;
+
+        if (data.success) {
+          toast({
+            title: "Success",
+            description: data.message,
+          });
+          setIsFollowed(true);
+          updateTask(id, { completed: true });
+          form.reset()
+        }
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Something went wrong",
+        });
+      }
+    });
   };
+
+  const handleFollow = () => {
+    if (!userId) return;
+    router.push(socialUrl);
+
+    setIsFollowed(true);
+    addTask({
+      id,
+      userId,
+      platform,
+      socialUrl,
+      title: `Follow Cineflicks on ${platform}`,
+      description,
+      completed: false,
+    });
+  };
+
+  const task = getTaskById(id);
 
   return (
     <Card className="bg-[#2A2D35] border-none text-white">
       <CardHeader>
-        {status === "completed" ? (
-          <div className="w-fit px-4 py-1 rounded-md bg-[#A17C43] text-white">
+        <h1 className="text-2xl font-semibold">Task #{id}</h1>
+        {task?.completed ? (
+          <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
             Completed
           </div>
         ) : (
-          <Button className="w-fit bg-[#2EAE48] hover:bg-[#259A3E]">
-            Start the task
+          <Button
+            className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
+            onClick={handleFollow}
+          >
+            {task ? "Pending" : "Start Task"}
           </Button>
         )}
       </CardHeader>
@@ -63,7 +133,7 @@ export function SocialCard({ platform, status, description }: SocialCardProps) {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Post your comment url"
+                      placeholder="Post your comment URL"
                       className="bg-[#1C1E24] border-none text-gray-300 placeholder:text-gray-500"
                     />
                   </FormControl>
@@ -72,19 +142,33 @@ export function SocialCard({ platform, status, description }: SocialCardProps) {
               )}
             />
             <div className="flex gap-4">
-              <Button
-                type="button"
-                className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
-                onClick={() => setIsFollowed(true)}
-              >
-                {isFollowed ? "Followed" : "Follow"}
-              </Button>
-              <Button
-                type="submit"
-                className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
-              >
-                Verify
-              </Button>
+              {userId ? (
+                <>
+                  {" "}
+                  <Button
+                    type="button"
+                    className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
+                    onClick={handleFollow}
+                  >
+                    {isFollowed ? "Followed" : "Follow"}
+                  </Button>
+                  <PendingButton
+                    disabled={isPending || !form.formState.isValid}
+                    type="submit"
+                    className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
+                  >
+                    {isPending ? "Verifying..." : "Verify"}
+                  </PendingButton>
+                </>
+              ) : (
+                <Button
+                  type="button"
+                  className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
+                  onClick={() => signIn("google", { callbackUrl: "/" })}
+                >
+                  Login to follow
+                </Button>
+              )}
             </div>
           </form>
         </Form>

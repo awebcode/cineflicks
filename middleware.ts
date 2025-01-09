@@ -1,6 +1,7 @@
 import { Role } from "@prisma/client";
 import { NextResponse, type NextRequest } from "next/server";
 import { verifyJwt } from "./lib/utils";
+import { cookies } from "next/headers";
 
 const ADMIN_ROUTES = ["/admin", "/dashboard"]; // Admin-specific routes
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"]; // Public routes
@@ -17,7 +18,13 @@ export async function middleware(req: NextRequest) {
   const isLoggedIn = !!payload?.id; // Check if user is logged in
   const isAdmin = payload?.role === Role.ADMIN; // Check if user has admin role
   const urlPath = req.nextUrl.pathname;
-
+  // Set couponCode in cookies
+  const couponCode = req.nextUrl.searchParams.get("couponCode");
+  const storedCouponCode = req.cookies.get("couponCode")?.value;
+  if (couponCode && couponCode !== storedCouponCode) {
+    (await cookies()).set("couponCode", couponCode);
+  }
+  // Ensure userId is set in cookies let userId = req.cookies.get("userId")?.value; if (!userId) { userId = generateObjectId(); req.cookies.set("userId", userId); }
   // Allow public routes to be accessed without authentication
   if (PUBLIC_ROUTES.includes(urlPath)) {
     return NextResponse.next();

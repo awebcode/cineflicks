@@ -1,3 +1,4 @@
+
 import AuthButton from "../common/auth-button";
 import { CineflicksLogo } from "../common/cineflicks-logo";
 import { MovieGrid } from "./movie-grid";

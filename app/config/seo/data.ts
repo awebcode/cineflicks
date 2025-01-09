@@ -1,68 +1,50 @@
 import { Metadata, type Viewport } from "next";
 
 export const defaultSEOdata: Metadata = {
-  title: "Linky - The Best Real-Time Chat Application",
+  title: "Cineflicks - Stream Movies & TV Shows Online",
   description:
-    "Linky is the ultimate real-time chat application that connects users instantly and provides seamless communication.",
+    "Cineflicks is your ultimate destination to stream movies and TV shows online. Enjoy a vast collection of entertainment at your fingertips.",
   keywords: [
-    "real-time chat",
-    "instant messaging",
-    "chat app",
-    "group chat",
-    "online messaging",
-    "Linky",
-    "chat application",
-    "messaging app",
-    "group messaging",
-    "online communication",
-    "instant messaging",
-    "chat app",
-    "group chat",
-    "online messaging",
-    "Linky",
-    "chat application",
-    "messaging app",
-    "group messaging",
-    "online communication",
-    "instant messaging",
-    "chat app",
-    "group chat",
-    "online messaging",
-    "Linky",
-    "chat application",
-    "messaging app",
-    "group messaging",
-    "online communication",
-    "Messenger Clone",
-    "Whatsapp Clone",
-    "Telegram Clone",
-    "Chat App template",
+    "watch movies online",
+    "stream movies",
+    "online TV shows",
+    "movie streaming",
+    "Cineflicks",
+    "TV shows online",
+    "free movies",
+    "HD streaming",
+    "latest movies",
+    "Cineflicks streaming",
+    "online cinema",
+    "movie platform",
+    "entertainment",
+    "online streaming platform",
     "awebcode",
   ],
   openGraph: {
-    title: "Linky - The Best Real-Time Chat Application",
+    title: "Cineflicks - Unlimited Entertainment",
     description:
-      "Linky is the ultimate real-time chat application that connects users instantly and provides seamless communication.",
-    url: "https://linky.vercel.app", // Replace with actual URL
-    siteName: "Linky",
+      "Cineflicks offers an extensive library of movies and TV shows. Watch anytime, anywhere on any device.",
+    url: "https://cineflicks.vercel.app", // Replace with the actual Cineflicks URL
+    siteName: "Cineflicks",
     locale: "en",
     type: "website",
   },
   twitter: {
-    title: "Linky - The Best Real-Time Chat Application",
+    title: "Cineflicks - Stream Movies & TV Shows Online",
     description:
-      "Linky is the ultimate real-time chat application that connects users instantly and provides seamless communication.",
+      "Stream the latest movies and TV shows online on Cineflicks. Enjoy unlimited entertainment anytime, anywhere.",
     card: "summary_large_image",
-    site: "@awebcode", // Replace with actual Twitter handle
-    creator: "@AsikurRahman", // Replace with actual Twitter handle
+    site: "@cineflicks", // Replace with actual Twitter handle
+    creator: "@cineflicks", // Replace with actual Twitter handle
   },
   appleWebApp: {
-    title: "Linky - Real-Time Chat",
+    title: "Cineflicks - Stream Movies & TV Shows",
     capable: true,
     statusBarStyle: "default",
   },
   facebook: {
-    appId: "123456789", // Replace with actual App ID
+    appId: "987654321", // Replace with the actual Facebook App ID
   },
   robots: {
     index: true,
@@ -71,32 +53,31 @@ export const defaultSEOdata: Metadata = {
   },
   icons: [
     {
-      url: "https://linkytalk.vercel.app/og-image.png", // Replace with actual icon URL
+      url: "https://cineflicks.vercel.app/og-image.png", // Replace with actual Cineflicks icon URL
       type: "image/png",
       sizes: "512x512",
     },
     {
-      url: "https://linkytalk.vercel.app/og-image.png", // Replace with actual icon URL
-      type: "image/png",
-      sizes: "512x512",
+      url: "https://cineflicks.vercel.app/favicon.ico", // Replace with actual favicon URL
+      type: "image/x-icon",
+      sizes: "16x16",
     },
   ],
-  applicationName: "Linky",
+  applicationName: "Cineflicks",
   authors: [
-    { name: "Asikur Rahman", url: "https://awebcode.vercel.app" }, // Replace with actual author URL
+    { name: "Cineflicks Team", url: "https://cineflicks.vercel.app" }, // Replace with actual team URL
   ],
   verification: {
-    google: "google-site-verification=1234567890", // Replace with actual verification code
-    yandex: "yandex-verification=1234567890", // Replace with actual verification code
-    yahoo: "y_key=1234567890", // Replace with actual verification code
+    google: "google-site-verification=9876543210", // Replace with actual verification code
+    yandex: "yandex-verification=9876543210", // Replace with actual verification code
+    yahoo: "y_key=9876543210", // Replace with actual verification code
   },
-
-  manifest: "https://linkytalk.vercel.app/manifest.webmanifest", // Replace with actual manifest URL
+  manifest: "https://cineflicks.vercel.app/manifest.webmanifest", // Replace with actual manifest URL
   appLinks: {
-    web: [{ url: "https://linkytalk.vercel.app", should_fallback: true }],
+    web: [{ url: "https://cineflicks.vercel.app", should_fallback: true }],
   },
-  creator: "Awebcode",
-  category: "chat, communication",
+  creator: "Cineflicks",
+  category: "movies, entertainment, streaming",
 };
 
 // Default viewport data
@@ -107,8 +88,8 @@ export const defaultViewPort: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  colorScheme: "light",
-  themeColor: "#ffffff",
+  colorScheme: "dark",
+  themeColor: "#000000", // Black for movie streaming theme
   minimumScale: 1,
   interactiveWidget: "resizes-content",
 };
