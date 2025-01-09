@@ -60,14 +60,14 @@ export default function DashboardSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} passHref>
-                      <a
-                        aria-label={item.title} // Add ARIA label for links
-                        className="flex items-center space-x-2"
-                      >
+                    <Link
+                      href={item.url}
+                      className="flex items-center space-x-2"
+                      aria-label={item.title}
+                    >
+                     
                         <item.icon aria-hidden="true" />
                         <span>{item.title}</span>
-                      </a>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

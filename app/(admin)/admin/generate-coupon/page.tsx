@@ -6,11 +6,12 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PrimaryButton from "@/components/common/PrimaryButton";
 import { toast } from "@/hooks/use-toast";
-import { Copy, Loader } from "lucide-react";
+import { Copy, CopyCheck, Loader } from "lucide-react";
 import { createInfluencer } from "@/actions/influencer-actions";
 import { useInfluencerInfiniteQuery, type Influencer } from "@/hooks/useInfluencer";
 import { TableComponent } from "./TableComponent";
 import { debounce } from "lodash";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Zod schema for validation
 const formSchema = z.object({
@@ -24,6 +25,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const GenerateCouponPage = () => {
+  const queryClient=useQueryClient()
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -57,6 +59,7 @@ const GenerateCouponPage = () => {
         });
       } else {
         setCouponCode(res.couponCode);
+        queryClient.invalidateQueries({queryKey:["get-influencers"]})
         toast({
           title: "Success",
           description: "Coupon code generated successfully",
@@ -92,6 +95,13 @@ const GenerateCouponPage = () => {
       setTotalInfluencersCount(data.pages[0].totalInfluencersCount);
     }
   }, [data]);
+  useEffect(() => {
+    if (isCopied) {
+      setTimeout(() => {
+         setIsCopied(false)
+      }, 3000);
+    }
+  },[isCopied])
 
   const handleDownloadCsv = async () => {
     const response = await fetch(
@@ -169,19 +179,19 @@ const GenerateCouponPage = () => {
         </form>
 
         {couponCode && (
-          <div className="text-left mt-4 flex items-center gap-4">
-            <div className="flex items-center gap-2">
+          <div className="text-left w-full mt-4 flex items-center gap-4">
+            <div className="flex items-center gap-2 w-full">
               <input
                 type="text"
                 value={`${process.env.NEXT_PUBLIC_APP_URL}/${couponCode}`}
                 readOnly
-                className="w-full px-4 py-3 bg-[#1E1E1E] text-white rounded-xl border border-[#F5A64C] focus:outline-none"
+                className="w-full max-w-full px-4 py-3 bg-[#1E1E1E] text-white rounded-xl border border-[#F5A64C] focus:outline-none" // Ensuring it takes all available space
               />
               <button
                 onClick={copyToClipboard}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-emerald-500 hover:text-emerald-700"
               >
-                <Copy size={20} />
+                {isCopied ? <CopyCheck size={20} /> : <Copy size={20} />}
               </button>
             </div>
           </div>
