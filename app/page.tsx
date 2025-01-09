@@ -7,6 +7,7 @@ import SubmitAddressPage from "@/components/submit-address";
 import FollowPage from "@/components/follow-us/follow";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import WalletStepsImage from "@/components/wallet-steps/WalletStepsImage";
 
 interface ProfilePageParams {
   searchParams: Promise<{ couponCode: string }>;
@@ -27,6 +28,7 @@ export default async function Home({ searchParams }: ProfilePageParams) {
         <WorkWithUsPage />
         <HowToSetupHelperWallet />
         <WalletSteps />
+        <WalletStepsImage/>
         <SubmitAddressPage />
         <FollowPage />
       </>
@@ -60,7 +62,8 @@ export default async function Home({ searchParams }: ProfilePageParams) {
       <HomePage />
       <WorkWithUsPage />
       <HowToSetupHelperWallet />
-      <WalletSteps />
+      {/* <WalletSteps /> */}
+      <WalletStepsImage />
       <SubmitAddressPage />
       <FollowPage />
     </>

@@ -1,6 +1,5 @@
 "use client";
 import { Calendar, Home, Inbox, List, Search, Settings } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -30,10 +29,16 @@ const items = [
 
 export default function DashboardSidebar() {
   return (
-    <Sidebar>
+    <Sidebar aria-label="Dashboard Sidebar">
       <SidebarContent className="bg-black text-gray-200">
         <SidebarGroup>
-          <div onClick={() => window.location.href = "/"} className="flex items-center my-2 cursor-pointer">
+          <div
+            onClick={() => (window.location.href = "/")}
+            className="flex items-center my-2 cursor-pointer"
+            role="button"
+            tabIndex={0} // Ensure the div is focusable for keyboard navigation
+            aria-label="Go to Homepage"
+          >
             <Img
               src="/logo-c.png"
               width={50}
@@ -55,9 +60,14 @@ export default function DashboardSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                    <Link href={item.url} passHref>
+                      <a
+                        aria-label={item.title} // Add ARIA label for links
+                        className="flex items-center space-x-2"
+                      >
+                        <item.icon aria-hidden="true" />
+                        <span>{item.title}</span>
+                      </a>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

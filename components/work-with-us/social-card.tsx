@@ -102,9 +102,10 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
   };
 
   const task = getTaskById(id);
+  console.log({task})
 
   return (
-    <Card className="bg-[#2A2D35] border-none text-white">
+    <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         {task?.completed ? (
@@ -134,7 +135,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
                     <Input
                       {...field}
                       placeholder="Post your comment URL"
-                      className="bg-[#1C1E24] border-none text-gray-300 placeholder:text-gray-500"
+                      className="bg-[#1C1E24] h-[56px] border-none text-gray-300 placeholder:text-gray-500"
                     />
                   </FormControl>
                   <FormMessage />
@@ -147,15 +148,15 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
                   {" "}
                   <Button
                     type="button"
-                    className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
+                    className="flex-1 bg-[#F5A64C] h-[43px] w-[146px] hover:bg-[#E89539] text-black font-medium"
                     onClick={handleFollow}
                   >
                     {isFollowed ? "Followed" : "Follow"}
                   </Button>
                   <PendingButton
-                    disabled={isPending || !form.formState.isValid}
+                    disabled={isPending || !form.formState.isValid || !task}
                     type="submit"
-                    className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
+                    className="flex-1 h-[43px] w-[146px] bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
                   >
                     {isPending ? "Verifying..." : "Verify"}
                   </PendingButton>

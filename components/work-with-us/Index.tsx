@@ -10,8 +10,8 @@ export default function WorkWithUsPage() {
   return (
     <div className="min-h-screen bg-[#1C1C1C] p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-white text-5xl font-bold mb-12">Work with us</h1>
-        <h1 className="text-gray-400 text-3xl font-bold mb-12">Completed Tasks {userTasks.filter((task) => task.completed).length}/{allTasks.length}</h1>
+        <h1 className="text-white text-5xl font-bold mb-8">Work with us</h1>
+        <h1 className="text-gray-100 text-3xl font-semibold">Completed Tasks {userTasks.filter((task) => task.completed).length}/{allTasks.length}</h1>
         <WorkWithUsGrid />
       </div>
     </div>

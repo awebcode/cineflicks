@@ -10,6 +10,7 @@ import {
 import { CheckCircle } from "lucide-react"; // Lucide icon
 import { Separator } from "../ui/separator";
 import { useSession } from "next-auth/react";
+import { useEffect, useRef } from "react";
 
 interface SuccessPopupProps {
   open: boolean;
@@ -17,14 +18,28 @@ interface SuccessPopupProps {
 }
 
 export default function SuccessPopup({ open, setOpen }: SuccessPopupProps) {
-   const  session=useSession()
-    return (
+  const session = useSession();
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Focus management for better accessibility when dialog opens
+  useEffect(() => {
+    if (open && dialogRef.current) {
+      dialogRef.current.focus();
+    }
+  }, [open]);
+
+  return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[425px] bg-black pt-12 text-white">
+      <DialogContent
+        ref={dialogRef}
+        className="sm:max-w-[425px] bg-black pt-12 text-white"
+        aria-live="assertive" // Announcing the dialog for screen readers
+      >
         <DialogHeader className="flex items-center gap-2">
           <CheckCircle className="text-green-500" size={40} />
           <DialogTitle className="text-3xl font-semibold tracking-wide">
-            Thanks {session.data?.user?.name?session.data?.user?.name:""} for participating!
+            Thanks {session.data?.user?.name ? session.data?.user?.name : "User"} for
+            participating!
           </DialogTitle>
         </DialogHeader>
         <div className="py-4">
@@ -50,7 +65,11 @@ export default function SuccessPopup({ open, setOpen }: SuccessPopupProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={() => setOpen(false)} type="button" >
+          <Button
+            onClick={() => setOpen(false)}
+            type="button"
+            aria-label="Close success popup"
+          >
             Close
           </Button>
         </DialogFooter>

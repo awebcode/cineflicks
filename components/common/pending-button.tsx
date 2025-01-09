@@ -19,7 +19,7 @@ const PendingButton = ({ className, pendingText, isPending, ...props }: Props) =
   const buttonProps = { ...props };
 
   return (
-    <Button disabled={IsPending} className={cn("w-full bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors disabled:opacity-50", className)} {...buttonProps}>
+    <Button disabled={IsPending} aria-controls="Submit" className={cn("w-full bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors disabled:opacity-50", className)} {...buttonProps}>
       {IsPending ? (
         <>
           <Loader className="mr-2 h-6 w-6 animate-spin" /> {pendingText}
