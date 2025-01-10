@@ -133,11 +133,11 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
-          {task?.completed && session?.data ? (
+          {task?.completed && session?.data?.user ? (
             <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
               Completed
             </div>
-          ) : task && session?.data ? (
+          ) : task && session?.data?.user ? (
             <Button
               className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
               onClick={handleFollow}
