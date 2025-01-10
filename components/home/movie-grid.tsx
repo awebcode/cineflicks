@@ -14,7 +14,7 @@ const columns = Array.from({ length: 9 }, (_, i) =>
 
 export function MovieGrid({ className }: { className?: string }) {
   return (
-    <div className={cn("relative w-full", className)}>
+    <div className={cn("relative w-full ", className)}>
       {/* Movie Grid */}
       <div className="grid grid-cols-9 gap-2 p-4 max-w-screen-2xl mx-auto">
         {columns.map((column, columnIndex) => (

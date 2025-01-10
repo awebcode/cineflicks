@@ -45,11 +45,11 @@ interface TableComponentProps {
 
 export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
   const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
-  const [isDeleting, startDeleteTransaction] = useTransition();
+  const [isDeleting, startDeleteTransition] = useTransition();
   const queryClient = useQueryClient();
 
   const handleDelete = async (id: string) => {
-    startDeleteTransaction(async () => {
+    startDeleteTransition(async () => {
       try {
         await deleteUser(id);
         toast({
@@ -73,11 +73,13 @@ export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
         <TableRow>
           <TableHead>Username</TableHead>
           <TableHead>Image</TableHead>
-
           <TableHead>Email</TableHead>
-          <TableHead>Coupon Code</TableHead>
-          <TableHead>Wallet Address</TableHead>
-          <TableHead>Created At</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Tasks</TableHead>
+          <TableHead>Coupon</TableHead>
+          <TableHead>Wallet Ad</TableHead>
+          <TableHead>Influencer Id</TableHead>
+          <TableHead>Joined</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -92,9 +94,17 @@ export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
               </Avatar>
             </TableCell>
             <TableCell>{user.email}</TableCell>
-
+            <TableCell>
+              {user.role === "ADMIN" ? (
+                <span className="text-emerald-500">Admin</span>
+              ) : (
+                "User"
+              )}
+            </TableCell>
+            <TableCell>{user.taskCount}</TableCell>
             <TableCell>{user.couponCode}</TableCell>
             <TableCell>{user.walletAddress}</TableCell>
+            <TableCell>{user.influencerId}</TableCell>
             <TableCell>{formatDistanceToNow(new Date(user.createdAt))}</TableCell>
             <TableCell className="flex items-center gap-2">
               <Link href={`/profile/${user.id}`}>
@@ -151,10 +161,10 @@ function EditUser({
   const [updatedRole, setUpdatedRole] = useState(role);
   const [updatedCouponCode, setUpdatedCouponCode] = useState(couponCode);
   const [updatedWalletAddress, setUpdatedWalletAddress] = useState(walletAddress);
-  const [isUpdating, startUpdateTransaction] = useTransition();
+  const [isUpdating, startUpdateTransition] = useTransition();
 
   const handleSubmit = async () => {
-    startUpdateTransaction(async () => {
+    startUpdateTransition(async () => {
       try {
         await updateUser({
           userId: id,

@@ -3,11 +3,10 @@ import AuthButton from "../common/auth-button";
 import { CineflicksLogo } from "../common/cineflicks-logo";
 import { MovieGrid } from "./movie-grid";
 
-export default async function HomePage() {
-  const couponCode = (await cookies()).get("couponCode")?.value;
+export default async function HomePage({couponCode}: {couponCode?: string}) {
 
   return (
-    <main className="relative overflow-hidden flex flex-col">
+    <main className="relative overflow-hidden h-full flex flex-col">
       {/* Movie Grid Background */}
       <div className="absolute inset-0 z-0 hidden md:block">
         <MovieGrid />
@@ -21,10 +20,10 @@ export default async function HomePage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col items-center justify-center space-y-10">
+        <div className="flex flex-col items-center justify-center space-y-8">
           <CineflicksLogo />
 
-          <h1 className="text-4xl md:text-6xl font-bold text-white mt-8">
+          <h1 className="text-4xl md:text-6xl font-bold leading-[87px] text-white">
             Try Our Social Task
           </h1>
 

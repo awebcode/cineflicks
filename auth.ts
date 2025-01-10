@@ -19,6 +19,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.name = user.name;
         token.email = user.email;
         token.image = user.image;
+        token.walletAddress = user.walletAddress;
+        token.couponCode = user.couponCode;
+        token.isSubmitted = user.isSubmitted;
       }
       return token;
     },

@@ -33,9 +33,9 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable}  antialiased flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable}  antialiased min-h-screen flex flex-col`}
       >
         <Toaster />
 

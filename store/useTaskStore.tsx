@@ -21,13 +21,16 @@ interface TaskState {
   getTaskById: (taskId: string | number) => Task | undefined;
   removeTask: (taskId: string | number) => void;
   getTasksByUser: (userId: string) => Task[];
+  isSubmitted: boolean;
+  setAsSubmitted: (isSubmitted: boolean) => void;
 }
 
 const useTaskStore = create<TaskState>()(
   persist(
     (set, get) => ({
       tasks: [],
-      allTasks:InitialTasks,
+      allTasks: InitialTasks,
+      isSubmitted: false,
       
 
       // Add or update a task in the store
@@ -66,6 +69,8 @@ const useTaskStore = create<TaskState>()(
 
       // Get all tasks assigned to a specific user
       getTasksByUser: (userId) => get().tasks.filter((task) => task.userId === userId),
+
+      setAsSubmitted: (isSubmitted) => set({ isSubmitted }),
     }),
     {
       name: "tasks", // Storage key

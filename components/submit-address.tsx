@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bep20Schema, type Bep20FormData } from "@/lib/schema";
@@ -18,13 +18,20 @@ const SuccessPopup = dynamic(() => import("./common/success-popup"), { ssr: fals
 export default function SubmitAddressPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const { data: session } = useSession();
-  const { getTasksByUser, allTasks } = useTaskStore((state) => state);
+  const { getTasksByUser, allTasks, isSubmitted, setAsSubmitted } = useTaskStore(
+    (state) => state
+  );
   const [isPending, startTransition] = useTransition();
   const form = useForm<Bep20FormData>({
     resolver: zodResolver(bep20Schema),
     mode: "all",
     defaultValues: { address: "" },
   });
+  useEffect(() => {
+    if (!isSubmitted) {
+      setAsSubmitted(session?.user.isSubmitted as boolean);
+    }
+  }, [isSubmitted,session,setAsSubmitted]);
 
   const userTasks = getTasksByUser(session?.user.id as string);
   const completedTasks = userTasks.filter((task) => task.completed).length;
@@ -33,9 +40,18 @@ export default function SubmitAddressPage() {
     try {
       startTransition(async () => {
         try {
+          if (isSubmitted) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "You have already submitted your address",
+            });
+            return;
+          }
           const res = await updateWalletAddress({
             walletAddress: data.address,
             userId: session?.user.id as string,
+            isSubmitted: true,
           });
 
           if (res && "error" in res && res?.error) {
@@ -50,6 +66,7 @@ export default function SubmitAddressPage() {
               description: res.message,
             });
             setShowSuccess(true);
+            setAsSubmitted(true);
           }
         } catch (error) {
           toast({
@@ -117,7 +134,11 @@ export default function SubmitAddressPage() {
           </button>
 
           <p className="text-gray-400 text-lg">
-            Completed Tasks {completedTasks}/{allTasks.length}
+            {isSubmitted ? (
+              <span className="text-emerald-500">You have submitted your address</span>
+            ) : (
+              `You have completed ${completedTasks} out of ${allTasks.length} tasks`
+            )}
           </p>
         </form>
       </div>

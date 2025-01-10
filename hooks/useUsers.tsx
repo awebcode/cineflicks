@@ -1,7 +1,6 @@
 import { getUsers } from "@/actions/user-actions";
 import type { Role } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { debounce } from "lodash";
 
 // Define the structure for the pagination cursor
 type PageParam = { cursor: string | null } | undefined;
@@ -14,6 +13,8 @@ export interface User {
   createdAt: Date;
   couponCode: string | null;
   walletAddress: string | null;
+  influencerId: string | null;
+  taskCount: number;
 }
 // Function to fetch messages with cursor pagination and optional search
 const fetchUsers = async ({

@@ -2,67 +2,66 @@ import { auth } from "@/auth";
 import HomePage from "@/components/home/home-page";
 import WorkWithUsPage from "@/components/work-with-us/Index";
 import HowToSetupHelperWallet from "@/components/setup-wallet";
-import { WalletSteps } from "@/components/wallet-steps/wallet-steps";
+import WalletStepsImage from "@/components/wallet-steps/WalletStepsImage";
 import SubmitAddressPage from "@/components/submit-address";
 import FollowPage from "@/components/follow-us/follow";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
-import WalletStepsImage from "@/components/wallet-steps/WalletStepsImage";
 
-interface ProfilePageParams {
-  searchParams: Promise<{ couponCode: string }>;
-}
 
-export default async function Home({ searchParams }: ProfilePageParams) {
-  // Extract searchParams and initialize cookies
+export default async function Home() {
   const cookieStore = await cookies();
   const storedCouponCode = cookieStore.get("couponCode")?.value;
-
-  // Authenticate the session
   const session = await auth();
   if (!session?.user) {
-    // If user is not logged in, return the base components
     return (
       <>
-        <HomePage />
+        <HomePage couponCode={session?.user?.couponCode ?? storedCouponCode} />
         <WorkWithUsPage />
         <HowToSetupHelperWallet />
-        <WalletSteps />
-        <WalletStepsImage/>
+        <WalletStepsImage />
         <SubmitAddressPage />
         <FollowPage />
       </>
     );
   }
 
-  // Handle logged-in user logic
+  // Retrieve user from database
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
   });
 
+  // Handle coupon logic for logged-in users
   if (user && !user.couponCode && storedCouponCode) {
     const coupon = await prisma.influencer.findUnique({
       where: { couponCode: storedCouponCode },
     });
 
     if (coupon) {
-      await prisma.user.update({
-        where: { id: session.user.id },
-        data: {
-          couponCode: coupon.couponCode,
-          influencerId: coupon.id,
-        },
-      });
+      // Check if coupon is expired
+      if (coupon.expireTime && coupon.expireTime < new Date()) {
+        console.log("Coupon expired:", coupon.couponCode);
+      } else {
+        // Use a transaction for atomic updates
+        await prisma.$transaction(async (tx) => {
+          await tx.user.update({
+            where: { id: session.user.id },
+            data: {
+              couponCode: coupon.couponCode,
+              influencerId: coupon.id,
+            },
+          });
+          console.log("Coupon applied successfully:", coupon.couponCode);
+        });
+      }
     }
   }
 
-  // Render the components
   return (
     <>
-      <HomePage />
+      <HomePage couponCode={user?.couponCode ?? ""} />
       <WorkWithUsPage />
       <HowToSetupHelperWallet />
-      {/* <WalletSteps /> */}
       <WalletStepsImage />
       <SubmitAddressPage />
       <FollowPage />

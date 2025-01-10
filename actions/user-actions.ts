@@ -6,18 +6,21 @@ import { z } from "zod";
 const updateWalAddressSchema = z.object({
   userId: z.string().min(1, "User ID is required"),
   walletAddress: z.string().min(1, "Wallet address is required"),
+  isSubmitted: z.boolean(),
 });
 export const updateWalletAddress = async (
   formData: z.infer<typeof updateWalAddressSchema>
 ) => {
   try {
-    const { walletAddress, userId } = await updateWalAddressSchema.parseAsync(formData);
+    const { walletAddress, userId, isSubmitted } =
+      await updateWalAddressSchema.parseAsync(formData);
     const data = await prisma.user.update({
       where: {
         id: userId,
       },
       data: {
         walletAddress,
+        isSubmitted,
       },
     });
     return {
@@ -97,7 +100,11 @@ export const updateUser = async (formData: UpdateUserArgs) => {
  * @param cursor
  * @returns
  */
-export const getUsers = async (query: string, limit: number, cursor: string) => {
+export const getUsers = async (
+  query: string,
+  limit: number,
+  cursor: string
+) => {
   try {
     // Fetch users with the search query
     const users = await prisma.user.findMany({
@@ -123,9 +130,20 @@ export const getUsers = async (query: string, limit: number, cursor: string) => 
         role: true,
         image: true,
         walletAddress: true,
+        influencerId: true,
         email: true,
         couponCode: true,
         createdAt: true,
+        tasks: {
+          select: {
+            id: true,
+          },
+        },
+        _count: {
+          select: {
+            tasks: true, // Get the count of tasks for each user
+          },
+        },
       },
       skip: cursor ? 1 : 0, // Skip the first user if there is a cursor
       take: limit, // Limit the number of users to fetch
@@ -135,17 +153,26 @@ export const getUsers = async (query: string, limit: number, cursor: string) => 
       },
     });
 
+    // Map users to include taskCount
+    const mappedUsers = users.map((user) => ({
+      ...user,
+      taskCount: user._count.tasks, // Add task count as taskCompleted
+    }));
+
     // Determine the next cursor based on the fetched users
     const nextCursor =
       users.length === limit
         ? users[users.length - 1].id
         : null; // If the number of users is equal to the limit, we have more users to fetch
-   const totalUsersCount= await prisma.user.count()
+
+    // Get total user count for pagination
+    const totalUsersCount = await prisma.user.count();
+
     // Return the users and pagination info
     return {
-      users,
+      users: mappedUsers,
       nextCursor,
-      totalUsersCount
+      totalUsersCount,
     };
   } catch (error) {
     // Handle any errors during the fetch operation
@@ -155,4 +182,3 @@ export const getUsers = async (query: string, limit: number, cursor: string) => 
     };
   }
 };
-

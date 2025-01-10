@@ -12,5 +12,8 @@ declare module "next-auth" {
     name: string;
     email: string;
     image: string;
+    walletAddress: string;
+    couponCode: string;
+    isSubmitted: boolean;
   }
 }

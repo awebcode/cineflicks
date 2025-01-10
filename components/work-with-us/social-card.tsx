@@ -31,7 +31,7 @@ interface SocialCardProps {
 export function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
   // const [data, createTaskAction, isPending] = useActionState(createTask, null);
-  const { addTask, updateTask, getTaskById } = useTaskStore((state) => state);
+  const { addTask, updateTask, getTaskById,isSubmitted } = useTaskStore((state) => state);
   const session = useSession();
   const userId = session.data?.user?.id;
   const [isPending, startTransition] = useTransition();
@@ -48,6 +48,14 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
 
     startTransition(async () => {
       try {
+        if(isSubmitted){
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "You have already submitted your tasks",
+          });
+          return;
+        }
         const data = await createTask({
           userId,
           platform,
@@ -87,22 +95,24 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
 
   const handleFollow = () => {
     if (!userId) return;
+
     router.push(socialUrl);
 
-    setIsFollowed(true);
-    addTask({
-      id,
-      userId,
-      platform,
-      socialUrl,
-      title: `Follow Cineflicks on ${platform}`,
-      description,
-      completed: false,
-    });
+    if (!isSubmitted) {
+      setIsFollowed(true);
+      addTask({
+        id,
+        userId,
+        platform,
+        socialUrl,
+        title: `Follow Cineflicks on ${platform}`,
+        description,
+        completed: false,
+      });
+    }
   };
 
   const task = getTaskById(id);
-  console.log({task})
 
   return (
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
@@ -112,17 +122,26 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
           <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
             Completed
           </div>
-        ) : (
+        ) : isPending ? (
           <Button
             className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
             onClick={handleFollow}
           >
-            {task ? "Pending" : "Start Task"}
+            Start Task
+          </Button>
+        ) : (
+          <Button
+            className="w-fit bg-green-500 hover:bg-green-400"
+            onClick={handleFollow}
+          >
+           Start Task
           </Button>
         )}
       </CardHeader>
       <CardContent className="space-y-4">
-        <h2 className="text-xl font-semibold">Follow Cineflicks on {platform}</h2>
+        <h2 className="text-xl font-semibold">
+          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
+        </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -151,14 +170,24 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
                     className="flex-1 bg-[#F5A64C] h-[43px] w-[146px] hover:bg-[#E89539] text-black font-medium"
                     onClick={handleFollow}
                   >
-                    {isFollowed ? "Followed" : "Follow"}
+                    {isFollowed || task ? (
+                      <span className="bg-emerald-500">Followed</span>
+                    ) : (
+                      "Follow"
+                    )}
                   </Button>
                   <PendingButton
                     disabled={isPending || !form.formState.isValid || !task}
                     type="submit"
                     className="flex-1 h-[43px] w-[146px] bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
                   >
-                    {isPending ? "Verifying..." : "Verify"}
+                    {isSubmitted ? (
+                      <span className="bg-emerald-500">Verified✅</span>
+                    ) : isPending ? (
+                      "Verifying..."
+                    ) : (
+                      "Verify"
+                    )}
                   </PendingButton>
                 </>
               ) : (

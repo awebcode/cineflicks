@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import type { Influencer } from "@/hooks/useInfluencer";
 import { formatDistanceToNow } from "date-fns";
-import { Edit, Loader, Trash } from "lucide-react";
+import { Edit, EyeIcon, Loader, Trash } from "lucide-react";
 import { deleteInfluencer, updateInfluencer } from "@/actions/influencer-actions";
 import { toast } from "@/hooks/use-toast";
 import type { InfluencerUpdateArgs } from "@/lib/influencer-schema";
@@ -28,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {  useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 interface TableComponentProps {
   influencers: Influencer[];
 }
@@ -75,6 +76,9 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
             <TableCell>{influencer.totalUsers}</TableCell>
             <TableCell>{formatDistanceToNow(new Date(influencer.expireTime))}</TableCell>
             <TableCell className="flex items-center gap-2">
+              <Link href={`/influencer/${influencer.id}`}>
+                <EyeIcon className="w-4 h-4 text-green-500 cursor-pointer" />
+              </Link>
               <Edit
                 onClick={() => setOpenUpdateDialog(true)}
                 className="w-4 h-4 text-green-500"
@@ -99,7 +103,6 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
           </TableRow>
         ))}
       </TableBody>
-     
     </Table>
   );
 };

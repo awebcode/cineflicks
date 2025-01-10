@@ -39,7 +39,7 @@ export default function DashboardSidebar() {
             tabIndex={0} // Ensure the div is focusable for keyboard navigation
             aria-label="Go to Homepage"
           >
-            <Img
+            {/* <Img
               src="/logo-c.png"
               width={50}
               height={50}
@@ -52,6 +52,14 @@ export default function DashboardSidebar() {
               height={40}
               alt="Cineflicks Logo"
               className="object-contain"
+            /> */}
+            <Img
+              src="/logo.png"
+              width={190}
+              height={40}
+              alt="Cineflicks logo part one: letter C in the brand design"
+              className="object-contain"
+              loading="lazy"
             />
           </div>
           <SidebarGroupLabel className="my-3">Categories</SidebarGroupLabel>
@@ -65,9 +73,8 @@ export default function DashboardSidebar() {
                       className="flex items-center space-x-2"
                       aria-label={item.title}
                     >
-                     
-                        <item.icon aria-hidden="true" />
-                        <span>{item.title}</span>
+                      <item.icon aria-hidden="true" />
+                      <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
