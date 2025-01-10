@@ -1,10 +1,12 @@
-import { cookies } from "next/headers";
 import AuthButton from "../common/auth-button";
 import { CineflicksLogo } from "../common/cineflicks-logo";
 import { MovieGrid } from "./movie-grid";
 
-export default async function HomePage({couponCode}: {couponCode?: string}) {
-
+export default async function HomePage({
+  couponCode,
+}: {
+  couponCode?: string;
+}) {
   return (
     <main className="relative overflow-hidden h-full flex flex-col">
       {/* Movie Grid Background */}
@@ -15,7 +17,7 @@ export default async function HomePage({couponCode}: {couponCode?: string}) {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center flex-grow px-4 py-12 text-center max-w-4xl mx-auto space-y-10">
         {/* Sign In Button */}
-        <div className="absolute top-4 right-8">
+        <div className="absolute top-4 right-0">
           <AuthButton />
         </div>
 
@@ -28,9 +30,9 @@ export default async function HomePage({couponCode}: {couponCode?: string}) {
           </h1>
 
           <p className="text-gray-300 max-w-3xl mx-auto">
-            Lorem ipsum dolor sit amet consectetuer adipiscing elit. Lorem ipsum dolor sit
-            amet consectetuer adipiscing elit. Lorem ipsum dolor sit amet consectetuer
-            adipiscing elit.
+            Lorem ipsum dolor sit amet consectetuer adipiscing elit. Lorem ipsum
+            dolor sit amet consectetuer adipiscing elit. Lorem ipsum dolor sit
+            amet consectetuer adipiscing elit.
           </p>
 
           {/* Referral Code */}

@@ -1,7 +1,7 @@
 import { Role } from "@prisma/client";
+import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import { verifyJwt } from "./lib/utils";
-import { cookies } from "next/headers";
 
 const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer"]; // Admin-specific routes
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"]; // Public routes
@@ -52,8 +52,5 @@ export async function middleware(req: NextRequest) {
 
 // Middleware configuration to match all routes except API, static, and images
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)"
-   
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
