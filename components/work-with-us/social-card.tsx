@@ -1,11 +1,8 @@
 "use client";
 
-import { useState,  useTransition } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { createTask } from "@/actions/task-actions";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -13,12 +10,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { commentSchema, type CommentFormData } from "@/lib/schema";
-import { createTask } from "@/actions/task-actions";
-import useTaskStore from "@/store/useTaskStore";
-import { signIn, useSession } from "next-auth/react";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { commentSchema, type CommentFormData } from "@/lib/schema";
+import useTaskStore from "@/store/useTaskStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import PendingButton from "../common/pending-button";
 
 interface SocialCardProps {
@@ -28,10 +28,17 @@ interface SocialCardProps {
   socialUrl: string;
 }
 
-export function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
+export function SocialCard({
+  id,
+  platform,
+  description,
+  socialUrl,
+}: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
   // const [data, createTaskAction, isPending] = useActionState(createTask, null);
-  const { addTask, updateTask, getTaskById,isSubmitted } = useTaskStore((state) => state);
+  const { addTask, updateTask, getTaskById, isSubmitted } = useTaskStore(
+    (state) => state
+  );
   const session = useSession();
   const userId = session.data?.user?.id;
   const [isPending, startTransition] = useTransition();
@@ -48,7 +55,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
 
     startTransition(async () => {
       try {
-        if(isSubmitted||task?.completed){
+        if (isSubmitted || task?.completed) {
           toast({
             variant: "destructive",
             title: "Error",
@@ -81,7 +88,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
           });
           setIsFollowed(true);
           updateTask(id, { completed: true });
-          form.reset()
+          form.reset();
         }
       } catch (error) {
         toast({
@@ -94,23 +101,22 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
   };
 
   const handleFollow = () => {
-
     if (!userId) {
       signIn("google");
-      return
+      return;
     }
     router.push(socialUrl);
-    
-    if (task?.completed||isSubmitted) {
+
+    if (task?.completed || isSubmitted) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "You have already completed this task",
-      })
-      return 
+      });
+      return;
     }
 
-    if (!isSubmitted&&!task?.completed) {
+    if (!isSubmitted && !task?.completed) {
       setIsFollowed(true);
       addTask({
         id,
@@ -124,7 +130,6 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
     }
   };
 
-
   const task = getTaskById(id);
   // if (!id || !userId) return null;
 
@@ -134,7 +139,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
           {task?.completed && session?.data?.user ? (
-            <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
+            <div className="w-fit px-4 py-1 rounded-[8px] bg-[#29B41D] text-white">
               Completed
             </div>
           ) : task && session?.data?.user ? (
@@ -163,7 +168,8 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on{" "}
+          <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -187,7 +193,6 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
             <div className="flex gap-4">
               {userId ? (
                 <>
-                  {" "}
                   <Button
                     type="button"
                     className="flex-1 bg-[#F5A64C] h-[43px] w-[146px] hover:bg-[#E89539] text-black font-medium"

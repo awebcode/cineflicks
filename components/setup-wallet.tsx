@@ -1,5 +1,5 @@
-import React from "react";
 import { Img } from "./common/Img"; // Assuming Img is an optimized image component
+import HeroVideoDialog from "./ui/hero-video-dialog";
 
 const HowToSetupHelperWallet = () => {
   return (
@@ -28,7 +28,14 @@ const HowToSetupHelperWallet = () => {
             width={1164}
             height={519}
             alt="Step-by-step guide on setting up the Helper Wallet"
-            className="object-contain"
+            className="object-contain hidden"
+          />
+          <HeroVideoDialog
+            className=" block"
+            animationStyle="from-center"
+            videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
+            thumbnailSrc="/setup-wallet.png"
+            thumbnailAlt="Hero Video"
           />
         </div>
       </div>

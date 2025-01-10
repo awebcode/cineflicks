@@ -1,4 +1,4 @@
-import { auth, signIn} from "@/auth";
+import { auth, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
 import UserDropdown from "./user-dropdown";
 
@@ -24,9 +24,13 @@ export default async function AuthButton() {
         type="submit"
         variant="outline"
         size="lg"
-        className="bg-[#F5A64C] text-white l hover:bg-[#E89539] "
+        className="bg-[#F5A64C] font-medium text-sm lg:text-base text-white l hover:bg-[#E89539] "
       >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="w-6 h-6"
+        >
           <path
             fill="#4285F4"
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
