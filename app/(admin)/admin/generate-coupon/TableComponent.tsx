@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   Table,
   TableBody,
@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Influencer } from "@/hooks/useInfluencer";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistance, formatDistanceToNow } from "date-fns";
 import { Edit, EyeIcon, Loader, Trash } from "lucide-react";
 import { deleteInfluencer, updateInfluencer } from "@/actions/influencer-actions";
 import { toast } from "@/hooks/use-toast";
@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {  useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 interface TableComponentProps {
   influencers: Influencer[];
@@ -36,7 +36,7 @@ interface TableComponentProps {
 export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) => {
   const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
   const [isDeleting, startDeleteTransaction] = useTransition();
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
   const handleDelete = async (id: string) => {
     startDeleteTransaction(async () => {
       try {
@@ -74,7 +74,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
 
             <TableCell>{influencer.couponCode}</TableCell>
             <TableCell>{influencer.totalUsers}</TableCell>
-            <TableCell>{formatDistanceToNow(new Date(influencer.expireTime))}</TableCell>
+            <TableCell><RemainingTime expireTime={influencer.expireTime} /></TableCell>
             <TableCell className="flex items-center gap-2">
               <Link href={`/influencer/${influencer.id}`}>
                 <EyeIcon className="w-4 h-4 text-green-500 cursor-pointer" />
@@ -106,7 +106,19 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
     </Table>
   );
 };
-
+const RemainingTime = ({ expireTime }: { expireTime: string|Date }) => {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(formatDistance(new Date(), new Date(expireTime)));
+    };
+    updateTime();
+    const intervalId = setInterval(updateTime, 1000);
+    // Update every second
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, [expireTime]);
+  return <span>{time}</span>;
+};
 interface DialogProps extends InfluencerUpdateArgs {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -125,7 +137,7 @@ function EditInfluencer({
   couponCode,
   expireTime,
 }: DialogProps) {
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
   const [updatedName, setUpdatedName] = useState(name);
   const [updatedCouponCode, setUpdatedCouponCode] = useState(couponCode);
   const [updatedExpireTime, setUpdatedExpireTime] = useState(expireTime);
@@ -153,7 +165,6 @@ function EditInfluencer({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {" "}
-     
       <DialogContent className="sm:max-w-[425px] bg-black text-white ">
         {" "}
         <DialogHeader>

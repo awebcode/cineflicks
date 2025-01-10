@@ -122,19 +122,19 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
           <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
             Completed
           </div>
-        ) : isPending ? (
+        ) : !task?.completed ? (
           <Button
             className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
             onClick={handleFollow}
           >
-            Start Task
+            Pending
           </Button>
         ) : (
           <Button
             className="w-fit bg-green-500 hover:bg-green-400"
             onClick={handleFollow}
           >
-           Start Task
+            Start Task
           </Button>
         )}
       </CardHeader>
