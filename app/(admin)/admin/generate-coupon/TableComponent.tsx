@@ -106,19 +106,37 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
     </Table>
   );
 };
-const RemainingTime = ({ expireTime }: { expireTime: string|Date }) => {
+const RemainingTime = ({ expireTime }: { expireTime: string | Date }) => {
   const [time, setTime] = useState("");
+  const [expired, setExpired] = useState(false);
+
   useEffect(() => {
     const updateTime = () => {
-      setTime(formatDistance(new Date(), new Date(expireTime)));
+      const now = new Date();
+      const expirationDate = new Date(expireTime);
+
+      if (now > expirationDate) {
+        setExpired(true); // Mark as expired
+      } else {
+        setExpired(false); // Show remaining time
+        setTime(formatDistance(now, expirationDate));
+      }
     };
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
-    // Update every second
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+
+    updateTime(); // Update time immediately
+    const intervalId = setInterval(updateTime, 1000); // Update every second
+
+    // Cleanup on component unmount
+    return () => clearInterval(intervalId);
   }, [expireTime]);
-  return <span>{time}</span>;
+
+  if (expired) {
+    return <span className="text-red-500">Expired</span>; // Show expired message
+  }
+
+  return <span>Remaining: {time}</span>; // Show remaining time
 };
+
 interface DialogProps extends InfluencerUpdateArgs {
   open: boolean;
   setOpen: (open: boolean) => void;

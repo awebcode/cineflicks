@@ -3,9 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { verifyJwt } from "./lib/utils";
 import { cookies } from "next/headers";
 
-const ADMIN_ROUTES = ["/admin", "/dashboard"]; // Admin-specific routes
+const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer"]; // Admin-specific routes
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"]; // Public routes
-const AUTHENTICATED_ROUTES = ["/profile"]; // Authenticated routes
+const AUTHENTICATED_ROUTES = ["/profile", "/profile/[id]"]; // Authenticated routes
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("session_token")?.value;
@@ -18,20 +18,26 @@ export async function middleware(req: NextRequest) {
   const isLoggedIn = !!payload?.id; // Check if user is logged in
   const isAdmin = payload?.role === Role.ADMIN; // Check if user has admin role
   const urlPath = req.nextUrl.pathname;
+
   // Set couponCode in cookies
   const couponCode = req.nextUrl.searchParams.get("couponCode");
   const storedCouponCode = req.cookies.get("couponCode")?.value;
   if (couponCode && couponCode !== storedCouponCode) {
     (await cookies()).set("couponCode", couponCode);
   }
-  // Ensure userId is set in cookies let userId = req.cookies.get("userId")?.value; if (!userId) { userId = generateObjectId(); req.cookies.set("userId", userId); }
+
   // Allow public routes to be accessed without authentication
   if (PUBLIC_ROUTES.includes(urlPath)) {
     return NextResponse.next();
   }
 
   // Restrict admin routes to only admin users
-  if (ADMIN_ROUTES.includes(urlPath) && !isAdmin) {
+  if (urlPath.startsWith("/admin") && !isAdmin) {
+    return NextResponse.redirect(new URL("/", req.url)); // Redirect non-admins to the home page
+  }
+
+  // Restrict influencer routes to only admin users
+  if (urlPath.startsWith("/influencer") && !isAdmin) {
     return NextResponse.redirect(new URL("/", req.url)); // Redirect non-admins to the home page
   }
 
@@ -46,5 +52,8 @@ export async function middleware(req: NextRequest) {
 
 // Middleware configuration to match all routes except API, static, and images
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico).*)"
+   
+  ],
 };
