@@ -94,9 +94,13 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
   };
 
   const handleFollow = () => {
-    if (!userId) return;
 
+    if (!userId) {
+      signIn("google");
+      return
+    }
     router.push(socialUrl);
+    
     if (task?.completed||isSubmitted) {
       toast({
         variant: "destructive",
@@ -128,25 +132,34 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
-        {task?.completed ? (
-          <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
-            Completed
-          </div>
-        ) : task ? (
+        <div className="flex justify-between items-center">
+          {task?.completed && session?.data ? (
+            <div className="w-fit px-4 py-1 rounded-md bg-emerald-500 text-white">
+              Completed
+            </div>
+          ) : task && session?.data ? (
+            <Button
+              className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
+              onClick={handleFollow}
+            >
+              Pending
+            </Button>
+          ) : (
+            <Button
+              className="w-fit bg-green-500 hover:bg-green-400"
+              onClick={handleFollow}
+            >
+              Start Task
+            </Button>
+          )}
+
           <Button
-            className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
-            onClick={handleFollow}
+            className="w-fit bg-green-500 hover:bg-green-400"
+            onClick={() => router.push(socialUrl)}
           >
-           Pending
+            Watch
           </Button>
-        ) : (
-          <Button
-            className="w-fit bg-green-500 hover:bg-[#E89539]"
-            onClick={handleFollow}
-          >
-           Start Task
-          </Button>
-        )}
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
@@ -191,7 +204,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
                     type="submit"
                     className="flex-1 h-[43px] w-[146px] bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
                   >
-                    {isSubmitted||task?.completed ? (
+                    {isSubmitted || task?.completed ? (
                       <span className="bg-emerald-500">Verified✅</span>
                     ) : isPending ? (
                       "Verifying..."
