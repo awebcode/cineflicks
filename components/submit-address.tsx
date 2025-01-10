@@ -33,7 +33,7 @@ export default function SubmitAddressPage() {
     }
   }, [isSubmitted,session,setAsSubmitted]);
 
-  const userTasks = getTasksByUser(session?.user.id as string);
+  const userTasks = getTasksByUser(session?.user?.id as string??"");
   const completedTasks = userTasks.filter((task) => task.completed).length;
 
   async function onSubmit(data: Bep20FormData) {
@@ -50,7 +50,7 @@ export default function SubmitAddressPage() {
           }
           const res = await updateWalletAddress({
             walletAddress: data.address,
-            userId: session?.user.id as string,
+            userId: session?.user?.id as string,
             isSubmitted: true,
           });
 

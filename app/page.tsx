@@ -28,7 +28,7 @@ export default async function Home() {
 
   // Retrieve user from database
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
+    where: { id: session.user?.id },
   });
 
   // Handle coupon logic for logged-in users
@@ -45,10 +45,10 @@ export default async function Home() {
         // Use a transaction for atomic updates
         await prisma.$transaction(async (tx) => {
           await tx.user.update({
-            where: { id: session.user.id },
+            where: { id: session.user?.id },
             data: {
               couponCode: coupon.couponCode,
-              influencerId: coupon.id,
+              influencerId: coupon?.id,
             },
           });
           console.log("Coupon applied successfully:", coupon.couponCode);

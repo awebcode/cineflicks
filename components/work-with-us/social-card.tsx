@@ -120,7 +120,9 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
     }
   };
 
+
   const task = getTaskById(id);
+  if (!id || !userId) return null;
 
   return (
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
