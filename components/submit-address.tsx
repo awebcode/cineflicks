@@ -29,7 +29,7 @@ export default function SubmitAddressPage() {
   });
   useEffect(() => {
     if (!isSubmitted) {
-      setAsSubmitted(session?.user.isSubmitted as boolean);
+      setAsSubmitted(session?.user?.isSubmitted as boolean??false);
     }
   }, [isSubmitted,session,setAsSubmitted]);
 

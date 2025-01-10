@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useActionState, useTransition } from "react";
+import { useState,  useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -122,7 +122,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
 
 
   const task = getTaskById(id);
-  if (!id || !userId) return null;
+  // if (!id || !userId) return null;
 
   return (
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
