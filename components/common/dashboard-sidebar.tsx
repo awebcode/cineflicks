@@ -1,5 +1,4 @@
 "use client";
-import { Calendar, Home, Inbox, List, Search, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -10,11 +9,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Img } from "./Img";
+import { Home, List } from "lucide-react";
 import Link from "next/link";
+import { Img } from "./Img";
 
 // Menu items.
 const items = [
+  {
+    title: "Upload Content",
+    url: "/admin/create-video",
+    icon: Home,
+  },
   {
     title: "Generate Coupon Code",
     url: "/admin/generate-coupon",
