@@ -6,7 +6,6 @@ export const commentSchema = z.object({
 
 export type CommentFormData = z.infer<typeof commentSchema>;
 
-
 export const bep20Schema = z.object({
   address: z
     .string()
@@ -16,4 +15,54 @@ export const bep20Schema = z.object({
 
 export type Bep20FormData = z.infer<typeof bep20Schema>;
 
+const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500MB
+const ACCEPTED_VIDEO_TYPES = ["video/mp4", "video/quicktime", "video/x-msvideo"];
 
+export const videoFormSchema = z.object({
+  video: z
+    .custom<FileList>()
+    .refine((files) => files?.length === 1, "Video is required.")
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 500MB.`)
+    .refine(
+      (files) => ACCEPTED_VIDEO_TYPES.includes(files?.[0]?.type),
+      "Only .mp4, .mov, and .avi formats are supported."
+    ),
+  videoUrl: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(20, "Title must be less than 20 characters"),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(300, "Description must be less than 300 words"),
+  timing: z.string().min(1, "Timing is required"),
+  language: z.string().min(1, "Language is required"),
+  cast: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string().min(1, "Cast name is required"),
+        bio: z.string().min(1, "Cast bio is required"),
+      })
+    )
+    .min(1, "At least one cast member is required"),
+});
+
+export type VideoFormValues = z.infer<typeof videoFormSchema>;
+// partnerFormSchema
+
+
+export const partnerFormSchema = z.object({
+  title: z.string().min(1).max(20, {
+    message: "Title must not exceed 20 characters",
+  }),
+  description: z.string().min(1).max(300, {
+    message: "Description must not exceed 300 words",
+  }),
+  link: z.string().url({ message: "Please enter a valid URL" }).optional(),
+  photoUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
+});
+
+export type PartnerFormValues = z.infer<typeof partnerFormSchema>;

@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,7 +20,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,16 +33,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { User } from "@/hooks/useUsers";
-import type { UpdateUserArgs } from "@/lib/user-schema";
 import type { Role } from "@prisma/client";
 import Link from "next/link";
 
-interface TableComponentProps {
+interface TableProps {
   users: User[];
 }
 
-export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
-  const [openUpdateDialog, setOpenUpdateDialog] = React.useState(false);
+export const UserTable: React.FC<TableProps> = ({ users }) => {
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDeleting, startDeleteTransition] = useTransition();
   const queryClient = useQueryClient();
 
@@ -52,9 +49,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
     startDeleteTransition(async () => {
       try {
         await deleteUser(id);
-        toast({
-          title: "User deleted successfully",
-        });
+        toast({ title: "User deleted successfully" });
         queryClient.invalidateQueries({ queryKey: ["get-users"] });
       } catch (error) {
         toast({
@@ -66,117 +61,109 @@ export const TableComponent: React.FC<TableComponentProps> = ({ users }) => {
     });
   };
 
+  const handleEdit = (user: User) => {
+    setSelectedUser(user); // Set the selected user
+  };
+
   return (
-    <Table>
-      <TableCaption>A list of users.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Username</TableHead>
-          <TableHead>Image</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Role</TableHead>
-          <TableHead>Tasks</TableHead>
-          <TableHead>Coupon</TableHead>
-          <TableHead>Wallet Ad</TableHead>
-          <TableHead>Influencer Id</TableHead>
-          <TableHead>Joined</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {users.map((user, index) => (
-          <TableRow key={index}>
-            <TableCell>{user.name}</TableCell>
-            <TableCell>
-              <Avatar>
-                <AvatarImage src={user.image} alt={user.name} />
-                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            </TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>
-              {user.role === "ADMIN" ? (
-                <span className="text-emerald-500">Admin</span>
-              ) : (
-                "User"
-              )}
-            </TableCell>
-            <TableCell>{user.taskCount}</TableCell>
-            <TableCell>{user.couponCode}</TableCell>
-            <TableCell>{user.walletAddress}</TableCell>
-            <TableCell>{user.influencerId}</TableCell>
-            <TableCell>{formatDistanceToNow(new Date(user.createdAt))}</TableCell>
-            <TableCell className="flex items-center gap-2">
-              <Link href={`/profile/${user.id}`}>
-                <EyeIcon className="w-4 h-4 text-green-500 cursor-pointer" />
-              </Link>
-              <Edit
-                onClick={() => setOpenUpdateDialog(true)}
-                className="w-4 h-4 text-green-500 cursor-pointer"
-              />
-              <EditUser
-                open={openUpdateDialog}
-                setOpen={setOpenUpdateDialog}
-                userId={user.id}
-                name={user.name}
-                email={user.email}
-                role={user.role}
-                couponCode={user.couponCode ?? ""}
-                walletAddress={user.walletAddress ?? ""}
-              />
-              {isDeleting ? (
-                <Loader className="w-4 h-4 text-green-500 animate-spin" />
-              ) : (
-                <Trash
-                  onClick={() => handleDelete(user.id)}
-                  className="w-4 h-4 text-red-500 cursor-pointer"
-                />
-              )}
-            </TableCell>
+    <>
+      <Table>
+        <TableCaption>A list of users.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Username</TableHead>
+            <TableHead>Image</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Tasks</TableHead>
+            <TableHead>Coupon</TableHead>
+            <TableHead>Wallet Ad</TableHead>
+            <TableHead>Influencer Id</TableHead>
+            <TableHead>Joined</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {users.map((user) => (
+            <TableRow key={user.id}>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>
+                <Avatar>
+                  <AvatarImage src={user.image} alt={user.name} />
+                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>
+                {user.role === "ADMIN" ? (
+                  <span className="text-emerald-500">Admin</span>
+                ) : (
+                  "User"
+                )}
+              </TableCell>
+              <TableCell>{user.taskCount}</TableCell>
+              <TableCell>{user.couponCode}</TableCell>
+              <TableCell>{user.walletAddress}</TableCell>
+              <TableCell>{user.influencerId}</TableCell>
+              <TableCell>{formatDistanceToNow(new Date(user.createdAt))}</TableCell>
+              <TableCell className="flex items-center gap-2">
+                <Link href={`/profile/${user.id}`}>
+                  <EyeIcon className="w-4 h-4 text-green-500 cursor-pointer" />
+                </Link>
+                <Edit
+                  onClick={() => handleEdit(user)}
+                  className="w-4 h-4 text-green-500 cursor-pointer"
+                />
+                {isDeleting ? (
+                  <Loader className="w-4 h-4 text-green-500 animate-spin" />
+                ) : (
+                  <Trash
+                    onClick={() => handleDelete(user.id)}
+                    className="w-4 h-4 text-red-500 cursor-pointer"
+                  />
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+      {/* Edit User Dialog */}
+      {selectedUser && (
+        <EditUserDialog user={selectedUser} onClose={() => setSelectedUser(null)} />
+      )}
+    </>
   );
 };
 
-interface DialogProps extends UpdateUserArgs {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+interface EditUserDialogProps {
+  user: User;
+  onClose: () => void;
 }
 
-function EditUser({
-  open,
-  setOpen,
-  userId: id,
-  name,
-  email,
-  role,
-  couponCode,
-  walletAddress,
-}: DialogProps) {
-  const queryClient = useQueryClient();
-  const [updatedName, setUpdatedName] = useState(name);
-  const [updatedEmail, setUpdatedEmail] = useState(email);
-  const [updatedRole, setUpdatedRole] = useState(role);
-  const [updatedCouponCode, setUpdatedCouponCode] = useState(couponCode);
-  const [updatedWalletAddress, setUpdatedWalletAddress] = useState(walletAddress);
+const EditUserDialog: React.FC<EditUserDialogProps> = ({ user, onClose }) => {
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [role, setRole] = useState(user.role);
+  const [couponCode, setCouponCode] = useState(user.couponCode ?? "");
+  const [walletAddress, setWalletAddress] = useState(user.walletAddress ?? "");
   const [isUpdating, startUpdateTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     startUpdateTransition(async () => {
       try {
         await updateUser({
-          userId: id,
-          name: updatedName,
-          email: updatedEmail,
-          role: updatedRole,
-          couponCode: updatedCouponCode,
-          walletAddress: updatedWalletAddress,
+          userId: user.id,
+          name,
+          email,
+          role,
+          couponCode,
+          walletAddress,
         });
         toast({ title: "User updated successfully" });
         queryClient.invalidateQueries({ queryKey: ["get-users"] });
-        setOpen(false);
+        onClose();
       } catch (error) {
         toast({
           title: "Error updating user",
@@ -188,12 +175,12 @@ function EditUser({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={!!user} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px] bg-black text-white">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
           <DialogDescription>
-            Make changes to your user here. Click save when you&apos;re done.
+            Make changes to the user. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -203,8 +190,8 @@ function EditUser({
             </Label>
             <Input
               id="name"
-              value={updatedName}
-              onChange={(e) => setUpdatedName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -214,8 +201,8 @@ function EditUser({
             </Label>
             <Input
               id="email"
-              value={updatedEmail}
-              onChange={(e) => setUpdatedEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -223,10 +210,7 @@ function EditUser({
             <Label htmlFor="role" className="text-right">
               Role
             </Label>
-            <Select
-              value={updatedRole}
-              onValueChange={(value) => setUpdatedRole(value as Role)}
-            >
+            <Select value={role} onValueChange={(value) => setRole(value as Role)}>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
@@ -242,8 +226,8 @@ function EditUser({
             </Label>
             <Input
               id="couponCode"
-              value={updatedCouponCode}
-              onChange={(e) => setUpdatedCouponCode(e.target.value)}
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -253,8 +237,8 @@ function EditUser({
             </Label>
             <Input
               id="walletAddress"
-              value={updatedWalletAddress}
-              onChange={(e) => setUpdatedWalletAddress(e.target.value)}
+              value={walletAddress}
+              onChange={(e) => setWalletAddress(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -267,4 +251,4 @@ function EditUser({
       </DialogContent>
     </Dialog>
   );
-}
+};

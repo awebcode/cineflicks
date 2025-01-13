@@ -1,5 +1,5 @@
 "use client";
-import { Calendar, Home, Inbox, List, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, LayoutDashboard, List, Search, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +25,11 @@ const items = [
     url: "/admin/user-list",
     icon: List,
   },
+  {
+    title: "Partner Bio",
+    url: "/admin/partner-bio",
+    icon: List,
+  },
 ];
 
 export default function DashboardSidebar() {
@@ -39,20 +44,6 @@ export default function DashboardSidebar() {
             tabIndex={0} // Ensure the div is focusable for keyboard navigation
             aria-label="Go to Homepage"
           >
-            {/* <Img
-              src="/logo-c.png"
-              width={50}
-              height={50}
-              alt="Logo C"
-              className="object-contain"
-            />
-            <Img
-              src="/logo-ineflicks.png"
-              width={140}
-              height={40}
-              alt="Cineflicks Logo"
-              className="object-contain"
-            /> */}
             <Img
               src="/logo.png"
               width={190}
@@ -62,6 +53,11 @@ export default function DashboardSidebar() {
               loading="lazy"
             />
           </div>
+          <SidebarMenu className="my-3">
+            <Link href={"/admin"} className="flex items-center">
+              <LayoutDashboard className="mr-2 text-[#FFD700]" /> Dashboard
+            </Link>
+          </SidebarMenu>
           <SidebarGroupLabel className="my-3">Categories</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
