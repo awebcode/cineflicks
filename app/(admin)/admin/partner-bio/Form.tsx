@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { uploadToCloudinary } from "@/lib/cloudinary";
+import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { partnerFormSchema, type PartnerFormValues } from "@/lib/schema";
 
 export default function PartnerBioForm() {
@@ -27,8 +27,8 @@ export default function PartnerBioForm() {
   const [isUploadingPhoto, setIsUploadingPhoto] = React.useState(false);
   const [isUploadingVideo, setIsUploadingVideo] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState({ photo: 0, video: 0 });
-  const [photoUploaded, setPhotoUploaded] = React.useState(false);
-  const [videoUploaded, setVideoUploaded] = React.useState(false);
+  const [photoUploaded, setPhotoUploaded] = React.useState("");
+  const [videoUploaded, setVideoUploaded] = React.useState("");
 
   const form = useForm<PartnerFormValues>({
     resolver: zodResolver(partnerFormSchema),
@@ -37,7 +37,7 @@ export default function PartnerBioForm() {
       description: "",
       link: "",
     },
-    mode:"all"
+    mode: "all",
   });
 
   async function handleFileUpload(file: File, type: "photo" | "video") {
@@ -89,10 +89,10 @@ export default function PartnerBioForm() {
 
       if (type === "photo") {
         form.setValue("photoUrl", url);
-        setPhotoUploaded(true);
+        setPhotoUploaded(url);
       } else {
         form.setValue("videoUrl", url);
-        setVideoUploaded(true);
+        setVideoUploaded(url);
       }
 
       toast({
@@ -117,14 +117,17 @@ export default function PartnerBioForm() {
     }
   }
 
-  function clearFile(type: "photo" | "video") {
+  async function clearFile(url: string, type: "photo" | "video") {
+    if (url&&url!==""&& typeof url === "string") {
+      await deleteFromCloudinary(url);
+    }
     if (type === "photo") {
       setPhotoPreview("");
-      setPhotoUploaded(false);
+      setPhotoUploaded("");
       form.setValue("photoUrl", "");
     } else {
       setVideoPreview("");
-      setVideoUploaded(false);
+      setVideoUploaded("");
       form.setValue("videoUrl", "");
     }
   }
@@ -271,7 +274,7 @@ export default function PartnerBioForm() {
                       )}
                       <button
                         type="button"
-                        onClick={() => clearFile("photo")}
+                        onClick={() => clearFile(photoUploaded,"photo")}
                         className="absolute top-2 left-2 bg-red-500 rounded-full p-1"
                       >
                         <X className="w-4 h-4 text-white" />
@@ -327,7 +330,7 @@ export default function PartnerBioForm() {
                       )}
                       <button
                         type="button"
-                        onClick={() => clearFile("video")}
+                        onClick={() => clearFile(videoUploaded,"video")}
                         className="absolute top-2 left-2 bg-red-500 rounded-full p-1"
                       >
                         <X className="w-4 h-4 text-white" />

@@ -26,3 +26,13 @@ export async function uploadToCloudinary(file: File, type: "photo" | "video") {
     throw new Error("Failed to upload file");
   }
 }
+
+
+export const deleteFromCloudinary = async (url: string) => {
+  try {
+    await cloudinary.uploader.destroy(url);
+    console.log("Deleted from Cloudinary:", url);
+  } catch (error) {
+    console.error("Error deleting from Cloudinary:", error);
+  }
+};
