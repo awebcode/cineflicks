@@ -3,7 +3,7 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2, CheckCircle2, X } from "lucide-react";
+import { Loader2, CheckCircle2, X, Loader } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 import { Button } from "@/components/ui/button";
@@ -131,7 +131,7 @@ export default function PartnerBioForm() {
 
   async function onSubmit(data: PartnerFormValues) {
     try {
-      const response = await fetch("/api/partners", {
+      const response = await fetch("/api/admin/partner/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -249,10 +249,13 @@ export default function PartnerBioForm() {
                     className="hidden"
                   />
                   {isUploadingPhoto && uploadProgress.photo > 0 && (
-                    <Progress
-                      value={uploadProgress.photo}
-                      className="mt-2 h-1 bg-[#FFD700]"
-                    />
+                    <>
+                      <Loader className="mr-2 h-6 w-6 animate-spin" />
+                      <Progress
+                        value={uploadProgress.photo}
+                        className="mt-2 h-1 bg-[#FFD700]"
+                      />
+                    </>
                   )}
                   {photoPreview && (
                     <div className="mt-4 relative w-32 h-32 rounded-lg overflow-hidden">
@@ -302,10 +305,13 @@ export default function PartnerBioForm() {
                     className="hidden"
                   />
                   {isUploadingVideo && uploadProgress.video > 0 && (
-                    <Progress
-                      value={uploadProgress.video}
-                      className="mt-2 h-1 bg-[#FFD700]"
-                    />
+                    <>
+                      <Loader className="mr-2 h-6 w-6 animate-spin" />
+                      <Progress
+                        value={uploadProgress.video}
+                        className="mt-2 h-1 bg-[#FFD700]"
+                      />
+                    </>
                   )}
                   {videoPreview && (
                     <div className="mt-4 relative w-full max-h-[200px] rounded-lg overflow-hidden">

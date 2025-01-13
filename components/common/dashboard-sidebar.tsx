@@ -1,5 +1,5 @@
 "use client";
-import { Calendar, Home, Inbox, LayoutDashboard, List, Search, Settings } from "lucide-react";
+import { Calendar,  Inbox, LayoutDashboard, Search, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -10,11 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Img } from "./Img";
+import { Home, List } from "lucide-react";
 import Link from "next/link";
+import { Img } from "./Img";
 
 // Menu items.
 const items = [
+  
   {
     title: "Generate Coupon Code",
     url: "/admin/generate-coupon",

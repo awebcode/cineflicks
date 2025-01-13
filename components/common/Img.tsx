@@ -3,7 +3,6 @@
 import Image from "next/image";
 import * as React from "react";
 
-
 interface ImgProps
   extends React.PropsWithChildren<React.ImgHTMLAttributes<HTMLImageElement>> {
   className?: string;
