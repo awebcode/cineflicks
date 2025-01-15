@@ -1,9 +1,9 @@
-import  {SocialIcons}  from "./social-icons";
-import { CineflicksLogo } from "../common/cineflicks-logo";
+import { Img } from "../common/Img";
+import { SocialIcons } from "./social-icons";
 
 export default function FollowPage() {
   return (
-    <main className="min-h-screen relative flex flex-col items-center justify-center gap-12 p-4">
+    <main className=" relative flex flex-col items-center justify-center gap-12 py-10 px-4">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 z-0 opacity-[79%]"
@@ -12,16 +12,22 @@ export default function FollowPage() {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      >
-      </div>
+      ></div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center space-y-12">
-        <h1 className="text-5xl md:text-[62px] leading-[68px] font-bold text-white">Follow us</h1>
+        <h1 className="text-2xl xl:text-4xl  font-bold">Follow us</h1>
 
         <SocialIcons />
 
-        <CineflicksLogo />
+        <Img
+          src="/logo.png"
+          width={400}
+          height={92}
+          alt="Cineflicks logo part one: letter C in the brand design"
+          className="object-contain w-[100px] xl:w-[200px] block mx-auto max-w-[]"
+          loading="lazy"
+        />
       </div>
     </main>
   );

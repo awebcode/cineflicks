@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -8,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { prisma } from "@/lib/prisma";
 import VideoPlayer from "./VideoPlayer";
 
 const getPartners = async () => {
@@ -28,15 +28,20 @@ const Partners = async () => {
   return (
     <section className="bg-[#262626] py-12 lg:py-20">
       <div className="container relative overflow-hidden">
-        <h2 className="text-3xl text-left lg:text-5xl xl:text-6xl font-bold">Partners</h2>
-        <div className="pt-5">
+        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
+          Partners
+        </h2>
+        <div className="pt-6">
           {partners.length === 0 ? (
             <h1 className=" text-[#999999]">No partners found.</h1>
           ) : (
             <Carousel opts={{ align: "start" }} className="w-full">
               <CarouselContent>
                 {partners.map((partner) => (
-                  <CarouselItem key={partner.id} className="md:basis-1/2 lg:basis-1/3">
+                  <CarouselItem
+                    key={partner.id}
+                    className="md:basis-1/2 lg:basis-1/3"
+                  >
                     <div className="p-1">
                       <Card className="bg-[#202020] py-4 border border-[#262626]">
                         <CardContent className="flex flex-col gap-4">
@@ -65,7 +70,9 @@ const Partners = async () => {
                                   rel="noopener noreferrer"
                                 >
                                   Link:{" "}
-                                  <span className="text-[#D48641]">{partner.link}</span>
+                                  <span className="text-[#D48641]">
+                                    {partner.link}
+                                  </span>
                                 </a>
                               )}
                             </div>
@@ -73,7 +80,9 @@ const Partners = async () => {
                           <p className="text-sm lg:text-base 2xl:text-xl text-[#999999]">
                             {partner.description}
                           </p>
-                          {partner.videoUrl && <VideoPlayer url={partner.videoUrl} />}
+                          {partner.videoUrl && (
+                            <VideoPlayer url={partner.videoUrl} />
+                          )}
                         </CardContent>
                       </Card>
                     </div>

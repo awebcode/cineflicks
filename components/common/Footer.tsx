@@ -1,9 +1,9 @@
-import React from "react";
-
 const Footer = () => {
   return (
-    <footer className="bg-[#F5A64C] text-center py-4 mt-12">
-      <p className="text-white">© 2024 Cineflicks All Rights Reserved.</p>
+    <footer className="bg-[#F5A64C] text-center py-4">
+      <p className="text-white text-sm lg:text-base ">
+        © 2025 Cineflicks All Rights Reserved.
+      </p>
     </footer>
   );
 };

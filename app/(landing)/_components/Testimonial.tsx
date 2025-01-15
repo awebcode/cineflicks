@@ -11,10 +11,10 @@ const Testimonial = () => {
   return (
     <section className="bg-[#262626] pb-16 ">
       <div className="container relative overflow-hidden">
-        <h2 className="text-3xl text-left lg:text-5xl xl:text-6xl font-bold">
+        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
           Testimonial
         </h2>
-        <div className="pt-5">
+        <div className="pt-6">
           <Carousel
             opts={{
               align: "start",
@@ -29,7 +29,7 @@ const Testimonial = () => {
                       <CardContent className="flex flex-col gap-4">
                         <div className="flex justify-between items-center gap-4">
                           <div>
-                            <h4 className="text-xl lg:text-2xl font-medium">
+                            <h4 className="text-xl font-medium">
                               Ajaneesh Abc
                             </h4>
                             <span className="text-sm lg:text-base font-medium text-[#999]">
@@ -101,7 +101,7 @@ const Testimonial = () => {
                             </div>
                           </div>
                         </div>
-                        <p className="text-sm lg:text-base 2xl:text-xl text-[#999999]">
+                        <p className="text-sm lg:text-base  text-[#999999]">
                           Temporibus autem quibusdam et aut officiis debitis aut
                           rerum necessitatibus saepe eveniet, ut et voluptates
                         </p>

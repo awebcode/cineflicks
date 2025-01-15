@@ -5,7 +5,7 @@ const HowToSetupHelperWallet = () => {
   return (
     <div className="bg-[#1A1A1A] flex flex-col items-center p-8 relative overflow-hidden">
       {/* Title */}
-      <h1 className="text-white text-4xl md:text-6xl leading-[58px] font-bold mb-16 mt-8 text-center">
+      <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold my-8 text-center">
         How To Setup Helper Wallet
       </h1>
 
@@ -30,13 +30,15 @@ const HowToSetupHelperWallet = () => {
             alt="Step-by-step guide on setting up the Helper Wallet"
             className="object-contain hidden"
           />
-          <HeroVideoDialog
-            className=" block"
-            animationStyle="from-center"
-            videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
-            thumbnailSrc="/setup-wallet.png"
-            thumbnailAlt="Hero Video"
-          />
+          <div>
+            <HeroVideoDialog
+              className=" block "
+              animationStyle="from-center"
+              videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
+              thumbnailSrc="/setup-wallet.png"
+              thumbnailAlt="Hero Video"
+            />
+          </div>
         </div>
       </div>
     </div>

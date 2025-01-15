@@ -2,19 +2,19 @@ import Image from "next/image";
 
 const WhatItTheCineflix = () => {
   return (
-    <section className=" relative overflow-hidden ">
-      <div className="container relative  py-16 z-10">
-        <h2 className="text-3xl lg:text-5xl xl:text-6xl font-bold">
-          What is Cineflicks?
-        </h2>
+    <section className=" relative overflow-hidden py-16 ">
+      <div className="container relative   z-10">
         <div className="pt-6 flex flex-col lg:flex-row lg:items-start gap-10">
-          <div className="basis-full lg:basis-1/2 space-y-6">
-            <p className="text-2xl lg:text-3xl font-medium ">
+          <div className="basis-fulllg:basis-1/2 mt-14 space-y-6">
+            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl d font-bold">
+              What is Cineflicks?
+            </h2>
+            <p className="text-lg lg:text-xl font-normal ">
               <b className="text-[#F2AA4C]">Cineflicks</b> is the world’s first
               incentivised streaming platform, blending entertainment and{" "}
               <b className="text-[#F2AA4C] block">crypto rewards.</b>
             </p>
-            <p className="text-2xl lg:text-3xl font-medium ">
+            <p className="text-lg lg:text-xl  font-normal ">
               <b className="text-[#F2AA4C]">Cineflicks</b> offers a unique
               experience where viewers earn{" "}
               <b className="text-[#F2AA4C]">CNF tokens</b> for every hour
@@ -25,7 +25,7 @@ const WhatItTheCineflix = () => {
             <Image
               width={1054}
               height={742}
-              className="relative z-30 lg:-mt-20 2xl:-mt-32"
+              className="relative z-30 -mt-6 "
               src="/imgs/home/whatis.png"
               alt="what is cineflicks"
             />

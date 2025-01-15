@@ -1,4 +1,3 @@
-import React from "react";
 import { Img } from "../common/Img";
 
 const WalletStepsImage = () => {
@@ -9,7 +8,7 @@ const WalletStepsImage = () => {
         width={1311}
         height={1053}
         alt="Steps to connect wallet"
-        className="object-contain max-w-full"
+        className="object-contain max-w-[900px] block mx-auto"
       />
     </div>
   );

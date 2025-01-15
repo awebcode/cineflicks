@@ -22,18 +22,18 @@ export default async function HomePage({
           <div className="flex flex-col items-center justify-center space-y-8">
             <CineflicksLogo />
 
-            <h1 className="text-4xl md:text-6xl font-bold leading-[87px] text-white">
+            <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white">
               Try Our Social Task
             </h1>
 
-            <p className="text-gray-300 max-w-3xl mx-auto">
+            <p className="text-gray-100 text-base max-w-xl mx-auto">
               Lorem ipsum dolor sit amet consectetuer adipiscing elit. Lorem
               ipsum dolor sit amet consectetuer adipiscing elit. Lorem ipsum
               dolor sit amet consectetuer adipiscing elit.
             </p>
 
             {/* Referral Code */}
-            <div className="bg-[#F5A64C] text-black rounded-lg px-8 py-4 flex items-center gap-4 font-medium">
+            <div className="bg-[#F5A64C] text-black rounded-lg px-8 py-3 flex items-center gap-4 font-medium">
               <span>Referral code: </span>
               <span className="font-bold">{couponCode ?? "Cineflicks"}</span>
             </div>

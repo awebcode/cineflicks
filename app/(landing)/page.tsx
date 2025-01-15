@@ -1,3 +1,4 @@
+import FollowPage from "@/components/follow-us/follow";
 import Hero from "./_components/Hero";
 import HowCanUseToken from "./_components/HowCanUseToken";
 import HowMuchSubscription from "./_components/HowMuchSubscription";
@@ -18,6 +19,7 @@ const LandingPage = () => {
       <Tokenomicis />
       <Partners />
       <Testimonial />
+      <FollowPage />
     </div>
   );
 };

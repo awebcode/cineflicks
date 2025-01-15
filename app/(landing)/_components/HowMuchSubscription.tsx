@@ -2,13 +2,13 @@ const HowMuchSubscription = () => {
   return (
     <section className="relative  overflow-hidden  py-10 lg:py-16">
       <div className="container relative">
-        <h2 className="text-3xl text-center lg:text-5xl xl:text-6xl font-bold">
+        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
           How much is a Cineflicks subscription?
         </h2>
-        <div className="w-full pt-6 lg:absolute lg:right-8 lg:top-[22rem] 2xl:max-w-[900px] 2xl:top-[32rem] px-8 max-w-[700px] xl:max-w-[800px] text-center lg:text-right ">
-          <p className="text-2xl lg:text-3xl 2xl:text-4xl !leading-[130%]  font-medium ">
+        <div className="w-full pt-6 lg:absolute lg:right-8 lg:top-[22rem] 2xl:max-w-[900px] 2xl:top-[32rem] px-8 max-w-[600px]  text-center lg:text-right ">
+          <p className="text-lg lg:text-xl  font-normal  !leading-[130%] ">
             Simply{" "}
-            <b className="lg:bg-[#F2AA4C] rounded-full lg:px-4 lg:py-2 bg-opacity-75">
+            <b className="lg:bg-[#F2AA4C] rounded-full lg:px-4 lg:py-0.5 bg-opacity-75">
               connect your wallet,
             </b>
             sign up and{" "}
