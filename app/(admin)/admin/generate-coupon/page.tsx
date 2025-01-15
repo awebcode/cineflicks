@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PrimaryButton from "@/components/common/PrimaryButton";
@@ -39,6 +39,7 @@ const GenerateCouponPage = () => {
   const debouncedSetSearch = debounce(setSearch, 300);
 
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -189,27 +190,28 @@ const GenerateCouponPage = () => {
             <div className="flex-1 h-full">
               <label
                 htmlFor="duration"
-                className="block text-sm  font-semibold text-gray-700"
+                className="block text-sm font-semibold text-gray-700"
               >
                 Duration
               </label>
-              <Select
-                {...register("duration")}
-                onValueChange={(value) => {
-                  register("duration").onChange({ target: { value } });
-                }}
-              >
-                <SelectTrigger className="h-full w-full mt-2 px-6 py-4 bg-[#1E1E1E] border border-[#F5A64C] rounded-xl text-white">
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  {durationOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Controller
+                name="duration"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="h-full w-full mt-2 px-6 py-4 bg-[#1E1E1E] border border-[#F5A64C] rounded-xl text-white">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {durationOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.duration && (
                 <p className="mt-2 text-sm text-red-500">{errors.duration.message}</p>
               )}
