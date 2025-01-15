@@ -1,16 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import PrimaryButton from "@/components/common/PrimaryButton";
-import { toast } from "@/hooks/use-toast";
-import { Copy, CopyCheck, Loader } from "lucide-react";
 import { createInfluencer } from "@/actions/influencer-actions";
-import { useInfluencerInfiniteQuery, type Influencer } from "@/hooks/useInfluencer";
-import { TableComponent } from "./TableComponent";
-import { debounce } from "lodash";
-import { useQueryClient } from "@tanstack/react-query";
+import PrimaryButton from "@/components/common/PrimaryButton";
 import {
   Select,
   SelectContent,
@@ -18,6 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import {
+  useInfluencerInfiniteQuery,
+  type Influencer,
+} from "@/hooks/useInfluencer";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { debounce } from "lodash";
+import { Copy, CopyCheck, Loader } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+import { TableComponent } from "./TableComponent";
 
 // Zod schema for validation
 const formSchema = z.object({
@@ -95,7 +98,7 @@ const GenerateCouponPage = () => {
   const copyToClipboard = () => {
     if (couponCode) {
       navigator.clipboard.writeText(
-        `${process.env.NEXT_PUBLIC_APP_URL}?couponCode=${couponCode}`
+        `${process.env.NEXT_PUBLIC_APP_URL}/campaign?couponCode=${couponCode}`
       );
       setIsCopied(true);
       toast({
@@ -172,7 +175,10 @@ const GenerateCouponPage = () => {
         <form onSubmit={handleSubmit(generateCoupon)}>
           <div className="flex gap-4">
             <div className="flex-1">
-              <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-semibold text-gray-700"
+              >
                 Name
               </label>
               <input
@@ -183,7 +189,9 @@ const GenerateCouponPage = () => {
                 placeholder="Enter name"
               />
               {errors.name && (
-                <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.name.message}
+                </p>
               )}
             </div>
 
@@ -213,7 +221,9 @@ const GenerateCouponPage = () => {
                 )}
               />
               {errors.duration && (
-                <p className="mt-2 text-sm text-red-500">{errors.duration.message}</p>
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.duration.message}
+                </p>
               )}
             </div>
           </div>
