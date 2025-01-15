@@ -235,7 +235,7 @@ export default function PartnerBioForm() {
                   <button
                     type="button"
                     onClick={() => document.getElementById("photo-upload")?.click()}
-                    className="bg-[#FFD700] text-black px-4 py-2 rounded-md font-medium"
+                    className="bg-[#F5A64C] text-black px-4 py-2 rounded-md font-medium"
                     disabled={isUploadingPhoto || isUploadingVideo}
                   >
                     Choose Photo
@@ -256,7 +256,7 @@ export default function PartnerBioForm() {
                       <Loader className="mr-2 h-6 w-6 animate-spin" />
                       <Progress
                         value={uploadProgress.photo}
-                        className="mt-2 h-1 bg-[#FFD700]"
+                        className="mt-2 h-1 bg-[#F5A64C]"
                       />
                     </>
                   )}
@@ -291,7 +291,7 @@ export default function PartnerBioForm() {
                   <button
                     type="button"
                     onClick={() => document.getElementById("video-upload")?.click()}
-                    className="bg-[#FFD700] text-black px-4 py-2 rounded-md font-medium"
+                    className="bg-[#F5A64C] text-black px-4 py-2 rounded-md font-medium"
                     disabled={isUploadingPhoto || isUploadingVideo}
                   >
                     Choose Video
@@ -312,7 +312,7 @@ export default function PartnerBioForm() {
                       <Loader className="mr-2 h-6 w-6 animate-spin" />
                       <Progress
                         value={uploadProgress.video}
-                        className="mt-2 h-1 bg-[#FFD700]"
+                        className="mt-2 h-1 bg-[#F5A64C]"
                       />
                     </>
                   )}
@@ -343,7 +343,7 @@ export default function PartnerBioForm() {
 
             <Button
               type="submit"
-              className="w-fit bg-[#FFD700] hover:bg-[#E6C200] text-black font-medium py-2"
+              className="w-fit bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium py-2"
               disabled={
                 isUploadingPhoto || isUploadingVideo || form.formState.isSubmitting
               }
