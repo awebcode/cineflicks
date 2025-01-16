@@ -2,7 +2,7 @@ const HowMuchSubscription = () => {
   return (
     <section className="relative  overflow-hidden  py-10 lg:py-16">
       <div className="container relative">
-        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-center">
           How much is a Cineflicks subscription?
         </h2>
         <div className="w-full pt-6 lg:absolute lg:right-8 lg:top-[22rem] 2xl:max-w-[900px] 2xl:top-[32rem] px-8 max-w-[600px]  text-center lg:text-right ">

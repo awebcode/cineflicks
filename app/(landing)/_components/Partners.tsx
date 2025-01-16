@@ -28,9 +28,7 @@ const Partners = async () => {
   return (
     <section className="bg-[#262626] py-12 lg:py-20">
       <div className="container relative overflow-hidden">
-        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
-          Partners
-        </h2>
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold">Partners</h2>
         <div className="pt-6">
           {partners.length === 0 ? (
             <h1 className=" text-[#999999]">No partners found.</h1>

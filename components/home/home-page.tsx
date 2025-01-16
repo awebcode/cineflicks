@@ -22,7 +22,7 @@ export default async function HomePage({
           <div className="flex flex-col items-center justify-center space-y-8">
             <CineflicksLogo />
 
-            <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white">
               Try Our Social Task
             </h1>
 

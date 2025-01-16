@@ -12,7 +12,7 @@ export default function WorkWithUsPage() {
   return (
     <div className="min-h-screen bg-[#1C1C1C] p-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-8">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-8">
           Work with us
         </h2>
         <h3 className="text-gray-100 mb-4 text-lg lg:text-2xl font-semibold">

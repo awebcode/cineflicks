@@ -6,7 +6,7 @@ const WhatItTheCineflix = () => {
       <div className="container relative   z-10">
         <div className="pt-6 flex flex-col lg:flex-row lg:items-start gap-10">
           <div className="basis-fulllg:basis-1/2 mt-14 space-y-6">
-            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl d font-bold">
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl d font-bold">
               What is Cineflicks?
             </h2>
             <p className="text-lg lg:text-xl font-normal ">
