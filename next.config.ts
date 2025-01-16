@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "300mb", // Increase to 300 MB
     },
   },
+
   async headers() {
     return [
       {
@@ -19,7 +20,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
+
   // Remove the invalid 'api' configuration
 };
 

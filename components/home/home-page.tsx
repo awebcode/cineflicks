@@ -14,7 +14,7 @@ export default async function HomePage({
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl w-full mx-auto px-4 relative">
+      <div className="container  w-full mx-auto px-4 relative">
         <div className="relative z-10 flex flex-col items-center justify-center flex-grow px-4 py-12 text-center max-w-4xl mx-auto space-y-10">
           {/* Sign In Button */}
 

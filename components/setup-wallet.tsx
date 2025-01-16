@@ -1,47 +1,79 @@
-import { Img } from "./common/Img"; // Assuming Img is an optimized image component
+"use client";
+
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import HeroVideoDialog from "./ui/hero-video-dialog";
 
 const HowToSetupHelperWallet = () => {
-  return (
-    <div className="bg-[#1A1A1A] flex flex-col items-center p-8 relative overflow-hidden">
-      {/* Title */}
-      <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold my-8 text-center">
-        How To Setup Helper Wallet
-      </h1>
+  const [isClient, setIsClient] = useState(false);
 
-      {/* Main Card */}
-      <div className="relative">
-        {/* Decorative dots at the bottom of the image */}
-        <div className="absolute -top-8 md:-top-12 -right-4 md:-right-6 grid grid-cols-10 gap-2 md:gap-3">
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
+    <section className="bg-[#1A1A1A] flex flex-col items-center py-12 md:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <motion.h1
+        className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 lg:mb-16 text-center text-white"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        How To Setup Helper Wallet
+      </motion.h1>
+
+      <div className="relative max-w-5xl w-full">
+        {/* Decorative dots */}
+        <div className="absolute -top-8 md:-top-12 -right-4 md:-right-6 grid grid-cols-10 gap-1 md:gap-2">
           {[...Array(80)].map((_, i) => (
-            <div
+            <motion.div
               key={i}
-              className="w-[5px] md:w-[7px] h-[5px] md:h-[7px] rounded-full bg-[#DC700059]"
+              className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-[#DC700059]"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.01, duration: 0.2 }}
             />
           ))}
         </div>
 
-        <div className="relative z-[500]">
-          {/* Use Next.js Image for optimization */}
-          <Img
-            src="/setup-wallet.png"
-            width={1164}
-            height={519}
-            alt="Step-by-step guide on setting up the Helper Wallet"
-            className="object-contain hidden"
-          />
-          <div>
+        <motion.div
+          className="relative z-10 rounded-lg overflow-hidden shadow-2xl"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          {isClient && (
             <HeroVideoDialog
-              className=" block "
+              className="w-full aspect-video"
               animationStyle="from-center"
               videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
               thumbnailSrc="/setup-wallet.png"
-              thumbnailAlt="Hero Video"
+              thumbnailAlt="How to Setup Helper Wallet"
             />
-          </div>
-        </div>
+          )}
+          {!isClient && <div className="w-full aspect-video bg-gray-900 animate-pulse" />}
+        </motion.div>
       </div>
-    </div>
+
+      {/* Additional information or steps could be added here */}
+      <motion.div
+        className="mt-10 text-center text-white"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <p className="text-lg md:text-xl mb-4">
+          Follow our step-by-step guide to set up your Helper Wallet
+        </p>
+        <a
+          href="#"
+          className="inline-block bg-[#F5A64C] text-black font-semibold py-2 px-6 rounded-full hover:bg-[#E89539] transition-colors duration-300"
+        >
+          Get Started
+        </a>
+      </motion.div>
+    </section>
   );
 };
 

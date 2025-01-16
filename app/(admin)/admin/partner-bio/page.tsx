@@ -1,8 +1,14 @@
-import React from 'react'
-import CreateVideoUI from './Form'
+import React from "react";
+import CreateVideoUI from "./Form";
+import PartnerListPage from "./PartnerList";
 
 const page = () => {
-  return <CreateVideoUI/>
-}
+  return (
+    <>
+      <CreateVideoUI />
+      <PartnerListPage />
+    </>
+  );
+};
 
-export default page
+export default page;

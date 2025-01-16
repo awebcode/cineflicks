@@ -13,7 +13,8 @@ export default {
         center: true,
         padding: "2rem",
         screens: {
-          "2xl": "1440px",
+          "2xl": "1400px", // this defines the maximum container width for 2xl screens
+          "xl": "1170px", // setting the container width to 1170px for xl screens and above
         },
       },
       colors: {
@@ -112,6 +113,10 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         marquee: "marquee var(--duration) infinite linear",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+      },
+      fontFamily: {
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
     },
   },

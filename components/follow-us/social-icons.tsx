@@ -12,6 +12,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://facebook.com/cineflicks",
+    bgColor: "#1877F2",
+    hoverBgColor: "#0E5FC1",
   },
   {
     name: "Instagram",
@@ -21,6 +23,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://instagram.com/cineflicks",
+    bgColor: "#E4405F",
+    hoverBgColor: "#D52F4D",
   },
   {
     name: "Twitter",
@@ -30,6 +34,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://twitter.com/cineflicks",
+    bgColor: "#1DA1F2",
+    hoverBgColor: "#0C85D0",
   },
   {
     name: "Telegram",
@@ -39,6 +45,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://t.me/cineflicks",
+    bgColor: "#0088CC",
+    hoverBgColor: "#0077B5",
   },
   {
     name: "Discord",
@@ -48,6 +56,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://discord.gg/cineflicks",
+    bgColor: "#7289DA",
+    hoverBgColor: "#5B73B7",
   },
   {
     name: "Medium",
@@ -57,6 +67,8 @@ const socialLinks = [
       </svg>
     ),
     href: "https://medium.com/cineflicks",
+    bgColor: "#00AB6C",
+    hoverBgColor: "#008F59",
   },
 ];
 
@@ -71,11 +83,31 @@ export function SocialIcons() {
         >
           <Link
             href={social.href}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-[#F5A64C] text-white hover:bg-[#E89539] transition-colors"
+            className={`w-12 h-12 flex items-center justify-center rounded-full transition-colors duration-300`}
+            style={{
+              backgroundColor: social.bgColor,
+              color: social.bgColor,
+            }}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {social.icon}
+            <motion.div
+              whileHover={{
+                color: social.bgColor,
+                transition: { duration: 0.3 },
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "100%",
+                borderRadius: "9999px",
+                backgroundColor: "white",
+              }}
+            >
+              {social.icon}
+            </motion.div>
           </Link>
         </motion.div>
       ))}

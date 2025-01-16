@@ -21,9 +21,14 @@ import { toast } from "@/hooks/use-toast";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { partnerFormSchema, type PartnerFormValues } from "@/lib/schema";
 import { useRouter } from "next/navigation";
+import { usePartnerStore } from "@/store/usePartnerStore";
+import { useShallow } from "zustand/react/shallow";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PartnerBioForm() {
-  const router=useRouter()
+  const router = useRouter();
+  const { setSelectedPartner, selectedPartner } = usePartnerStore(useShallow((s) => s));
+  const queryClient = useQueryClient();
   const [photoPreview, setPhotoPreview] = React.useState<string>("");
   const [videoPreview, setVideoPreview] = React.useState<string>("");
   const [isUploadingPhoto, setIsUploadingPhoto] = React.useState(false);
@@ -31,7 +36,6 @@ export default function PartnerBioForm() {
   const [uploadProgress, setUploadProgress] = React.useState({ photo: 0, video: 0 });
   const [photoUploaded, setPhotoUploaded] = React.useState("");
   const [videoUploaded, setVideoUploaded] = React.useState("");
-
   const form = useForm<PartnerFormValues>({
     resolver: zodResolver(partnerFormSchema),
     defaultValues: {
@@ -43,6 +47,22 @@ export default function PartnerBioForm() {
     },
     mode: "all",
   });
+
+  React.useEffect(() => {
+    if (selectedPartner) {
+      form.reset({
+        title: selectedPartner.title,
+        description: selectedPartner.description,
+        link: selectedPartner.link ?? "",
+        photoUrl: selectedPartner.photoUrl ?? "",
+        videoUrl: selectedPartner.videoUrl ?? "",
+      });
+      setPhotoPreview(selectedPartner.photoUrl ?? "");
+      setVideoPreview(selectedPartner.videoUrl ?? "");
+      setPhotoUploaded(selectedPartner.photoUrl ?? "");
+      setVideoUploaded(selectedPartner.videoUrl ?? "");
+    }
+  }, [selectedPartner, form]);
 
   async function handleFileUpload(file: File, type: "photo" | "video") {
     try {
@@ -123,24 +143,31 @@ export default function PartnerBioForm() {
   }
 
   async function clearFile(url: string, type: "photo" | "video") {
-    if (url && url !== "" && typeof url === "string") {
-      await deleteFromCloudinary(url);
-    }
-    if (type === "photo") {
-      setPhotoPreview("");
-      setPhotoUploaded("");
-      form.setValue("photoUrl", "");
-    } else {
-      setVideoPreview("");
-      setVideoUploaded("");
-      form.setValue("videoUrl", "");
+    if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
+      if (url && url !== "" && typeof url === "string") {
+        await deleteFromCloudinary(url);
+      }
+      if (type === "photo") {
+        setPhotoPreview("");
+        setPhotoUploaded("");
+        form.setValue("photoUrl", "");
+      } else {
+        setVideoPreview("");
+        setVideoUploaded("");
+        form.setValue("videoUrl", "");
+      }
     }
   }
 
   async function onSubmit(data: PartnerFormValues) {
     try {
-      const response = await fetch("/api/admin/partner/create", {
-        method: "POST",
+      const endpoint = selectedPartner
+        ? `/api/admin/partner/update/${selectedPartner.id}`
+        : "/api/admin/partner/create";
+      const method = selectedPartner ? "PUT" : "POST";
+
+      const response = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -150,13 +177,15 @@ export default function PartnerBioForm() {
       if (!response.ok) throw new Error();
 
       toast({
-        title: "Partner bio saved successfully",
+        title: `Partner bio ${selectedPartner ? "updated" : "saved"} successfully`,
         duration: 3000,
       });
-      router.push("/admin");
+      queryClient.invalidateQueries({ queryKey: ["get-partners"] });
+      setSelectedPartner(null)
+      // router.push("/admin");
     } catch (error) {
       toast({
-        title: "Error saving partner bio",
+        title: `Error ${selectedPartner ? "updating" : "saving"} partner bio`,
         variant: "destructive",
       });
     }
@@ -166,7 +195,7 @@ export default function PartnerBioForm() {
     <div className="min-h-screen bg-[#1A1A1A] flex items-center justify-center">
       <div className="w-full mx-auto max-w-7xl p-4 md:p-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-white">Partners Bio</h1>
+          <h1 className="text-2xl font-semibold text-white">{selectedPartner ? "Update" : "Create"} Partners Bio</h1>
         </div>
         <Form {...form}>
           <form
@@ -358,7 +387,7 @@ export default function PartnerBioForm() {
               {(isUploadingPhoto || isUploadingVideo || form.formState.isSubmitting) && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-              SAVE
+              {selectedPartner ? "UPDATE" : "SAVE"}
             </Button>
           </form>
         </Form>

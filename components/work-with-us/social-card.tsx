@@ -29,14 +29,8 @@ interface SocialCardProps {
   socialUrl: string;
 }
 
-export function SocialCard({
-  id,
-  platform,
-  description,
-  socialUrl,
-}: SocialCardProps) {
+export function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
-  // const [data, createTaskAction, isPending] = useActionState(createTask, null);
   const { addTask, updateTask, getTaskById, isSubmitted } = useTaskStore(
     (state) => state
   );
@@ -132,7 +126,6 @@ export function SocialCard({
   };
 
   const task = getTaskById(id);
-  // if (!id || !userId) return null;
 
   return (
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
@@ -145,14 +138,14 @@ export function SocialCard({
             </div>
           ) : task && session?.data?.user ? (
             <Button
-              className="w-fit bg-[#F5A64C] hover:bg-[#E89539]"
+              className="w-fit bg-[#F5A64C] hover:bg-[#E89539] cursor-pointer"
               onClick={handleFollow}
             >
               Pending
             </Button>
           ) : (
             <Button
-              className="w-fit bg-green-500 hover:bg-green-400"
+              className="w-fit bg-green-500 hover:bg-green-400 cursor-pointer"
               onClick={handleFollow}
             >
               Start Task
@@ -160,7 +153,7 @@ export function SocialCard({
           )}
 
           <Button
-            className="w-fit bg-green-500 hover:bg-green-400"
+            className="w-fit bg-green-500 hover:bg-green-400 cursor-pointer"
             onClick={() => router.push(socialUrl)}
           >
             Watch
@@ -183,7 +176,13 @@ export function SocialCard({
                     <Input
                       {...field}
                       placeholder="Post your comment URL"
-                      className="bg-[#1C1E24] h-[56px] border-none text-gray-300 placeholder:text-gray-500"
+                      className={cn(
+                        "bg-[#1C1E24] h-[56px] border-none text-gray-300 placeholder:text-gray-500",
+                        isSubmitted || task?.completed
+                          ? "cursor-not-allowed"
+                          : "cursor-text"
+                      )}
+                      disabled={isSubmitted || task?.completed}
                     />
                   </FormControl>
                   <FormMessage />
@@ -197,21 +196,28 @@ export function SocialCard({
                     type="button"
                     className={cn(
                       "flex-1 h-[43px] w-[146px] font-medium text-black",
-                      isFollowed||task
-                        ? "bg-emerald-500 hover:bg-emerald-600 text-white"
+                      isFollowed || task
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
+                    disabled={isFollowed || !!task}
                     onClick={handleFollow}
                   >
                     {isFollowed || task ? "Followed" : "Follow"}
                   </Button>
                   <PendingButton
-                    disabled={isPending || !form.formState.isValid || !task}
+                    disabled={
+                      isPending ||
+                      !form.formState.isValid ||
+                      !task ||
+                      isSubmitted ||
+                      task?.completed
+                    }
                     type="submit"
                     className={cn(
                       "flex-1 h-[43px] w-[146px] font-medium text-black",
                       isSubmitted || task?.completed
-                        ? "bg-emerald-500 hover:bg-emerald-600 text-white"
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
                   >
