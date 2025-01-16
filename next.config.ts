@@ -3,10 +3,24 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: "300mb", // Increase to 10 MB (default is 1 MB)
+      bodySizeLimit: "300mb", // Increase to 300 MB
     },
   },
-  /* config options here */
+  async headers() {
+    return [
+      {
+        source: "/api/(.*)",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/json",
+          },
+        ],
+      },
+    ];
+  },
+  
+  // Remove the invalid 'api' configuration
 };
 
 export default nextConfig;

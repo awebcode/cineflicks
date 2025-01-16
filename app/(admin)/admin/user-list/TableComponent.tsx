@@ -220,7 +220,7 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ user, onClose }) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          {/* <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="couponCode" className="text-right">
               Coupon Code
             </Label>
@@ -241,7 +241,7 @@ const EditUserDialog: React.FC<EditUserDialogProps> = ({ user, onClose }) => {
               onChange={(e) => setWalletAddress(e.target.value)}
               className="col-span-3"
             />
-          </div>
+          </div> */}
         </div>
         <DialogFooter>
           <Button type="submit" onClick={handleSubmit}>

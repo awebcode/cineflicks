@@ -20,8 +20,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 import { partnerFormSchema, type PartnerFormValues } from "@/lib/schema";
+import { useRouter } from "next/navigation";
 
 export default function PartnerBioForm() {
+  const router=useRouter()
   const [photoPreview, setPhotoPreview] = React.useState<string>("");
   const [videoPreview, setVideoPreview] = React.useState<string>("");
   const [isUploadingPhoto, setIsUploadingPhoto] = React.useState(false);
@@ -36,6 +38,8 @@ export default function PartnerBioForm() {
       title: "",
       description: "",
       link: "",
+      photoUrl: "",
+      videoUrl: "",
     },
     mode: "all",
   });
@@ -60,6 +64,7 @@ export default function PartnerBioForm() {
         });
         return;
       }
+
       if (type === "photo") {
         setIsUploadingPhoto(true);
       } else {
@@ -118,7 +123,7 @@ export default function PartnerBioForm() {
   }
 
   async function clearFile(url: string, type: "photo" | "video") {
-    if (url&&url!==""&& typeof url === "string") {
+    if (url && url !== "" && typeof url === "string") {
       await deleteFromCloudinary(url);
     }
     if (type === "photo") {
@@ -146,7 +151,9 @@ export default function PartnerBioForm() {
 
       toast({
         title: "Partner bio saved successfully",
+        duration: 3000,
       });
+      router.push("/admin");
     } catch (error) {
       toast({
         title: "Error saving partner bio",
@@ -263,7 +270,7 @@ export default function PartnerBioForm() {
                   {photoPreview && (
                     <div className="mt-4 relative w-32 h-32 rounded-lg overflow-hidden">
                       <img
-                        src={photoPreview}
+                        src={photoPreview || "/placeholder.svg"}
                         alt="Preview"
                         className="object-cover w-full h-full"
                       />
@@ -274,7 +281,7 @@ export default function PartnerBioForm() {
                       )}
                       <button
                         type="button"
-                        onClick={() => clearFile(photoUploaded,"photo")}
+                        onClick={() => clearFile(photoUploaded, "photo")}
                         className="absolute top-2 left-2 bg-red-500 rounded-full p-1"
                       >
                         <X className="w-4 h-4 text-white" />
@@ -330,7 +337,7 @@ export default function PartnerBioForm() {
                       )}
                       <button
                         type="button"
-                        onClick={() => clearFile(videoUploaded,"video")}
+                        onClick={() => clearFile(videoUploaded, "video")}
                         className="absolute top-2 left-2 bg-red-500 rounded-full p-1"
                       >
                         <X className="w-4 h-4 text-white" />

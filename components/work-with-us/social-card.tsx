@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import PendingButton from "../common/pending-button";
+import { cn } from "@/lib/utils";
 
 interface SocialCardProps {
   id: string | number;
@@ -168,8 +169,7 @@ export function SocialCard({
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on{" "}
-          <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -195,27 +195,31 @@ export function SocialCard({
                 <>
                   <Button
                     type="button"
-                    className="flex-1 bg-[#F5A64C] h-[43px] w-[146px] hover:bg-[#E89539] text-black font-medium"
+                    className={cn(
+                      "flex-1 h-[43px] w-[146px] font-medium text-black",
+                      isFollowed||task
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white"
+                        : "bg-[#F5A64C] hover:bg-[#E89539]"
+                    )}
                     onClick={handleFollow}
                   >
-                    {isFollowed || task ? (
-                      <span className="bg-emerald-500">Followed</span>
-                    ) : (
-                      "Follow"
-                    )}
+                    {isFollowed || task ? "Followed" : "Follow"}
                   </Button>
                   <PendingButton
                     disabled={isPending || !form.formState.isValid || !task}
                     type="submit"
-                    className="flex-1 h-[43px] w-[146px] bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
-                  >
-                    {isSubmitted || task?.completed ? (
-                      <span className="bg-emerald-500">Verified✅</span>
-                    ) : isPending ? (
-                      "Verifying..."
-                    ) : (
-                      "Verify"
+                    className={cn(
+                      "flex-1 h-[43px] w-[146px] font-medium text-black",
+                      isSubmitted || task?.completed
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white"
+                        : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
+                  >
+                    {isSubmitted || task?.completed
+                      ? "Verified✅"
+                      : isPending
+                      ? "Verifying..."
+                      : "Verify"}
                   </PendingButton>
                 </>
               ) : (
