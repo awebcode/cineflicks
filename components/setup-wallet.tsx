@@ -5,7 +5,7 @@ const HowToSetupHelperWallet = () => {
   return (
     <div className="bg-[#1A1A1A] flex flex-col items-center p-8 relative overflow-hidden">
       {/* Title */}
-      <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold my-8 text-center">
+      <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold my-8 text-center">
         How To Setup Helper Wallet
       </h1>
 

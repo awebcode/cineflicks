@@ -7,7 +7,7 @@ const HowToBuyToken = () => {
         Join Cineflicks Waitlist
       </span>
       <div className="container pt-1 pb-6">
-        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-center">
           How to buy <span className="text-[#F2AA4C]">CNF Tokens?</span>
         </h2>
         <Img

@@ -4,7 +4,7 @@ const Tokenomicis = () => {
   return (
     <section className="relative py-10 xl:py-20">
       <div className="container pt-7 pb-4">
-        <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-center">
           <span className="text-[#F2AA4C]">Tokenomics </span>Breakdown
         </h2>
         <div>
@@ -18,7 +18,7 @@ const Tokenomicis = () => {
         </div>
 
         <div className="py-16 xl:py-24 space-y-4">
-          <h3 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-center">
+          <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-center">
             What Can I Do with MY{" "}
             <span className="text-[#F2AA4C]">$CNF ? </span>
           </h3>

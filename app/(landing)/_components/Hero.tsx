@@ -21,7 +21,7 @@ const Hero = () => {
           />
         </div>
         <div className="lg:max-w-[500px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-20 2xl:bottom-10 max-w-[600px]">
-          <p className="text-3xl 2xl:text-4xl  font-normal">
+          <p className="text-3xl xl:text-4xl  font-normal">
             The{" "}
             <span className="font-bold bg-yellow-600 rounded-full py-0.5 px-5">
               Blockchain-based
