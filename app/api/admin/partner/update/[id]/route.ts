@@ -1,8 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { partnerFormSchema } from "@/lib/schema"; // Adjust this import path as necessary
 import { updatePartner } from "@/actions/partner-actions";
+import { partnerFormSchema } from "@/lib/schema";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+): Promise<NextResponse> {
   try {
     const partnerId = params.id;
     const body = await request.json();
@@ -19,6 +22,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("Error updating partner:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
