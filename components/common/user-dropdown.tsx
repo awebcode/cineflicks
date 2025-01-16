@@ -22,16 +22,16 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ name, image, role }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
+        <div
           title={name ?? "Profile"}
-          className="flex flex-col items-center gap-2 px-4"
+          className="flex flex-col items-center gap-2 px-4 cursor-pointer"
         >
           <Avatar className="w-8 h-8">
             <AvatarImage src={image || ""} alt={name || "User"} />
             <AvatarFallback>{name?.charAt(0).toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           <span>{name}</span>
-        </button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
         <DropdownMenuItem onClick={() => router.push("/profile")}>

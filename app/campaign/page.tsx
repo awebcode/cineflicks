@@ -66,6 +66,13 @@ export default async function Home() {
 
   return (
     <>
+      <nav>
+        <div className=" z-[9999]   fixed w-full flex justify-end top-4 right-0">
+          <div className="max-w-7xl px-6 xl:px-12 flex justify-end w-full mx-auto relative">
+            <AuthButton />
+          </div>
+        </div>
+      </nav>
       <HomePage couponCode={user?.couponCode ?? ""} />
       <WorkWithUsPage />
       <HowToSetupHelperWallet />

@@ -100,7 +100,8 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
       signIn("google");
       return;
     }
-    router.push(socialUrl);
+    // Open the link in a new tab
+    window.open(socialUrl, "_blank");
 
     if (task?.completed || isSubmitted) {
       toast({
@@ -154,7 +155,7 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
 
           <Button
             className="w-fit bg-green-500 hover:bg-green-400 cursor-pointer"
-            onClick={() => router.push(socialUrl)}
+            onClick={() => window.open(socialUrl, "_blank")}
           >
             Watch
           </Button>

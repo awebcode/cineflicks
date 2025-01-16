@@ -1,4 +1,3 @@
-import { Img } from "@/components/common/Img";
 import WalletStepsImage from "@/components/wallet-steps/WalletStepsImage";
 
 const HowToBuyToken = () => {
