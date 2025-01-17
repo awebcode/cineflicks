@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { commentSchema, type CommentFormData } from "@/lib/schema";
+import { cn } from "@/lib/utils";
 import useTaskStore from "@/store/useTaskStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
@@ -20,7 +21,6 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import PendingButton from "../common/pending-button";
-import { cn } from "@/lib/utils";
 
 interface SocialCardProps {
   id: string | number;
@@ -29,7 +29,7 @@ interface SocialCardProps {
   socialUrl: string;
 }
 
-export function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
+function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
   const { addTask, updateTask, getTaskById, isSubmitted } = useTaskStore(
     (state) => state
@@ -163,7 +163,8 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on{" "}
+          <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -245,3 +246,5 @@ export function SocialCard({ id, platform, description, socialUrl }: SocialCardP
     </Card>
   );
 }
+
+export default SocialCard;

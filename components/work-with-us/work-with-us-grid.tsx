@@ -1,5 +1,12 @@
+"use client";
+
 import useTaskStore from "@/store/useTaskStore";
-import { SocialCard } from "./social-card";
+
+import dynamic from "next/dynamic";
+
+const SocialCard = dynamic(() => import("./social-card"), {
+  ssr: false,
+});
 
 export function WorkWithUsGrid() {
   const { allTasks } = useTaskStore((state) => state);

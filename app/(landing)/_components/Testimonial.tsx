@@ -9,7 +9,7 @@ import {
 
 const Testimonial = () => {
   return (
-    <section className="bg-[#262626] pb-16 ">
+    <section className="bg-[#262626] py-16 ">
       <div className="container relative overflow-hidden">
         <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold">
           Testimonial

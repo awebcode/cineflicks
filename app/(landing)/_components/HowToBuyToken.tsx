@@ -1,10 +1,10 @@
-import WalletStepsImage from "@/components/wallet-steps/WalletStepsImage";
+import Image from "next/image";
 
 const HowToBuyToken = () => {
   return (
-    <section className="bg-[#1A1A1A] relative lg:mt-10 py-12 sm:py-16 lg:py-24">
+    <section className="bg-[#190F04] relative lg:mt-10 py-12 sm:py-10 lg:py-16">
       {/* Waitlist Badge */}
-      <span className="bg-[#F2AA4C] text-black px-4 py-2 sm:py-3 rounded-full font-medium text-xs sm:text-base md:text-lg absolute left-1/2 transform -translate-x-1/2 -top-6 sm:-top-8">
+      <span className="bg-[#F2AA4C] text-black px-4 py-2 sm:py-3 rounded-full font-medium text-xs sm:text-base md:text-lg lg:text-3xl absolute left-1/2 transform -translate-x-1/2 -top-6 sm:-top-8">
         Join Cineflicks Waitlist
       </span>
 
@@ -16,8 +16,15 @@ const HowToBuyToken = () => {
         </h2>
 
         {/* Wallet Steps Image */}
-        <div className="mt-8 md:mt-10 lg:mt-12">
-          <WalletStepsImage />
+        <div className="relative w-full max-w-[900px] flex justify-center  2xl:max-w-[1180px] aspect-[1311/1053]">
+          <Image
+            src="/setup-wallet-landing.png"
+            alt="Steps to connect wallet"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 90vw, (max-width: 1024px) 80vw, 900px"
+            className="object-contain"
+            priority
+          />
         </div>
       </div>
     </section>

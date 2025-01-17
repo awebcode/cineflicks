@@ -15,9 +15,10 @@ const LandingPage = () => {
       <WhatItTheCineflix />
       <HowMuchSubscription />
       <HowToBuyToken />
+      <Partners />
       <HowCanUseToken />
       <Tokenomicis />
-      <Partners />
+
       <Testimonial />
       <FollowPage />
     </div>

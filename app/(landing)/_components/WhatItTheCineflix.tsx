@@ -5,11 +5,11 @@ const WhatItTheCineflix = () => {
     <section className=" relative overflow-hidden py-16 ">
       <div className="container relative   z-10">
         <div className="pt-6 flex flex-col lg:flex-row lg:items-start gap-10">
-          <div className="basis-fulllg:basis-1/2 mt-14 space-y-6">
+          <div className="basis-fulll lg:basis-[40%] mt-14 space-y-6">
             <h2 className="text-3xl lg:text-4xl xl:text-5xl d font-bold">
               What is Cineflicks?
             </h2>
-            <p className="text-lg lg:text-xl font-normal ">
+            <p className="text-lg lg:text-xl xl:text-3xl font-normal ">
               <b className="text-[#F2AA4C]">Cineflicks</b> is the world’s first
               incentivised streaming platform, blending entertainment and{" "}
               <b className="text-[#F2AA4C] block">crypto rewards.</b>
@@ -21,7 +21,7 @@ const WhatItTheCineflix = () => {
               watched.
             </p>
           </div>
-          <div className="relative basis-full lg:basis-1/2">
+          <div className="relative basis-full lg:basis-[60%]">
             <Image
               width={1054}
               height={742}

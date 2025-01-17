@@ -2,7 +2,7 @@ import { Img } from "@/components/common/Img";
 
 const HowCanUseToken = () => {
   return (
-    <section className="bg-[#262626] py-10 ">
+    <section className="bg-[#111111] py-10 lg:py-16 2xl:py-20 ">
       <div className="container grid gap-10">
         <div className="grid lg:grid-cols-2 items-center gap-10">
           <Card
@@ -13,7 +13,7 @@ const HowCanUseToken = () => {
             description="Lorem ipsum dolor amet dummy content here ..."
           />
           <div className="space-y-2">
-            <p className="text-lg lg:text-xl xl:text-2xl font-medium uppercase">
+            <p className="text-lg lg:text-xl xl:text-3xl font-medium uppercase">
               How can I use
             </p>
             <p className="text-2xl lg:text-3xl xl:text-4xl  font-medium uppercase">

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <section className="min-h-screen h-full relative overflow-hidden bg-[url('/imgs/home/hero-bg.png')] bg-cover bg-center w-full">
+    <section className="lg:min-h-screen  h-[60vh] lg:h-full relative overflow-hidden bg-[url('/imgs/home/hero-bg.png')] bg-cover bg-center w-full">
       <Image
         layout="fill"
         src="/imgs/home/movies.png"
@@ -17,7 +17,7 @@ const Hero = () => {
             alt="cineflics logo"
             width={514}
             height={120}
-            className="w-[180px] 2xl:w-[240px]"
+            className="w-[180px] lg:w-[280px]  xl:w-[340px] 2xl:w-[360px]"
           />
         </div>
         <div className="lg:max-w-[500px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-20 2xl:bottom-10 max-w-[600px]">
