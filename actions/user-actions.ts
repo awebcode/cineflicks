@@ -1,5 +1,6 @@
 "use server";
 
+import {  signOut } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { updateUserSchema, type UpdateUserArgs } from "@/lib/user-schema";
 import { z } from "zod";
@@ -100,11 +101,7 @@ export const updateUser = async (formData: UpdateUserArgs) => {
  * @param cursor
  * @returns
  */
-export const getUsers = async (
-  query: string,
-  limit: number,
-  cursor: string
-) => {
+export const getUsers = async (query: string, limit: number, cursor: string) => {
   try {
     // Fetch users with the search query
     const users = await prisma.user.findMany({
@@ -160,10 +157,7 @@ export const getUsers = async (
     }));
 
     // Determine the next cursor based on the fetched users
-    const nextCursor =
-      users.length === limit
-        ? users[users.length - 1].id
-        : null; // If the number of users is equal to the limit, we have more users to fetch
+    const nextCursor = users.length === limit ? users[users.length - 1].id : null; // If the number of users is equal to the limit, we have more users to fetch
 
     // Get total user count for pagination
     const totalUsersCount = await prisma.user.count();
@@ -179,6 +173,23 @@ export const getUsers = async (
     return {
       error: true,
       message: "Failed to fetch users",
+    };
+  }
+};
+
+export const signOutAction = async () => {
+  try {
+    await signOut();
+
+    return {
+      success: true,
+      message: "User signed out successfully",
+    };
+  } catch (error) {
+    console.log({ error });
+    return {
+      error: true,
+      message: "User sign out failed",
     };
   }
 };

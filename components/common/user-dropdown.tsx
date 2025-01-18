@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { signOutAction } from "@/actions/user-actions";
 interface UserDropdownProps {
   name?: string | null;
   image?: string | null;
@@ -42,7 +43,15 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ name, image, role }) => {
             <Link href="/admin">Admin</Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={async() => {
+            await signOutAction();
+            window.location.reload();
+            // signOut({ redirect: false, callbackUrl: "/" });
+          }}
+        >
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
