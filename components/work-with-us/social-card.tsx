@@ -31,9 +31,8 @@ interface SocialCardProps {
 
 function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const { addTask, updateTask, getTaskById, isSubmitted,getTaskByPlatform } = useTaskStore(
-    (state) => state
-  );
+  const { addTask, updateTask, getTaskById, isSubmitted, getTaskByPlatform } =
+    useTaskStore((state) => state);
   const session = useSession();
   const userId = session.data?.user?.id;
   const [isPending, startTransition] = useTransition();
@@ -126,28 +125,28 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
     }
   };
 
-  const task = getTaskByPlatform(platform)||getTaskById(id); //id
+  const task = getTaskByPlatform(platform) || getTaskById(id); //id
   console.log({ task });
 
   return (
-    <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
+    <Card className="bg-[#2A2D35] w-full  border-none text-white">
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
           {task?.completed && session?.data?.user ? (
-            <div className="w-fit px-4 py-1 rounded-[8px] bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white">
-              Completed
+            <div className="w-fit px-4 inline-flex items-center justify-center h-10 py-1 rounded-[8px] bg-[#F5A64C]/55 hover:bg-[#F5A64C]/80 text-white">
+              <span>Completed</span>
             </div>
           ) : task && session?.data?.user ? (
             <Button
-              className="w-fit bg-[#F5A64C] hover:bg-[#E89539] cursor-pointer"
+              className="w-fit h-10 bg-[#F5A64C] hover:bg-[#E89539] cursor-pointer"
               onClick={handleFollow}
             >
               Pending
             </Button>
           ) : (
             <Button
-              className="w-fit bg-[#F2AA4C] hover:bg-[#E89539] cursor-pointer"
+              className="w-fit h-10 bg-[#A95608] text-white hover:bg-[#E89539] cursor-pointer"
               onClick={handleFollow}
             >
               Start Task
@@ -155,7 +154,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
           )}
 
           <Button
-            className="w-fit bg-[#F2AA4C] hover:bg-[#E89539] cursor-pointer"
+            className="w-fit h-10 text-white bg-[#F2AA4C] hover:bg-[#E89539] cursor-pointer"
             onClick={() => window.open(socialUrl, "_blank")}
           >
             Watch
@@ -164,7 +163,8 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on{" "}
+          <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -191,7 +191,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
                 </FormItem>
               )}
             />
-            <div className="flex gap-4">
+            <div className="flex gap-4 lg:gap-6">
               {userId ? (
                 <>
                   <Button
@@ -199,7 +199,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
                     className={cn(
                       "flex-1 h-[43px] w-[146px] font-medium text-black",
                       isFollowed || task
-                        ? "bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white cursor-not-allowed"
+                        ? "bg-[#9A7545] hover:bg-[#F5A64C]/80 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
                     disabled={isFollowed || !!task}
@@ -217,7 +217,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
                     }
                     type="submit"
                     className={cn(
-                      "flex-1 h-[43px] w-[146px] font-medium text-black",
+                      "flex-1 h-[43px] rounded-lg w-[146px] font-medium text-black",
                       isSubmitted || task?.completed
                         ? "bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"

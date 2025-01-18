@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { CineflicksLogo } from "../common/cineflicks-logo";
-import { MovieGrid } from "./movie-grid";
 
 export default async function HomePage({
   couponCode,
@@ -9,10 +9,13 @@ export default async function HomePage({
   return (
     <main className="relative overflow-hidden  h-full flex flex-col">
       {/* Movie Grid Background */}
-      <div className="absolute inset-0 z-0 hidden md:block">
-        <MovieGrid />
-      </div>
-
+      <Image
+        src={"/campaign_hero_bg.avif"}
+        alt="campaign_hero_bg"
+        fill
+        priority
+        className="absolute inset-0 object-cover"
+      />
       {/* Content */}
       <div className="container  w-full mx-auto px-4 relative">
         <div className="relative z-10 flex flex-col items-center justify-center flex-grow px-4 py-12 text-center max-w-4xl mx-auto space-y-10">
@@ -33,7 +36,7 @@ export default async function HomePage({
             </p>
 
             {/* Referral Code */}
-            <div className="bg-[#F5A64C] text-black rounded-lg px-8 py-3 flex items-center gap-4 font-medium">
+            <div className="bg-[#DC7000B2]/70 text-xl text-white border border-[#F2AA4C] rounded-lg px-8 py-3 flex items-center gap-4 font-medium">
               <span>Referral code: </span>
               <span className="font-bold">{couponCode ?? "Cineflicks"}</span>
             </div>
