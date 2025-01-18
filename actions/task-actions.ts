@@ -34,4 +34,14 @@ export const createTask = async (formData: z.infer<typeof createTaskSchema>) => 
 };
 
 
-
+export async function fetchUserTasks(userId: string) {
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { userId },
+    });
+    return tasks;
+  } catch (error) {
+    console.error("Failed to fetch tasks:", error);
+    return [];
+  }
+}

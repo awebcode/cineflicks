@@ -20,16 +20,12 @@ export function MovieGrid({ className }: { className?: string }) {
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className="space-y-4">
             {column.map((poster, index) => (
-              <motion.div
-                key={poster}
-              
-                className="relative  rounded-lg overflow-hidden"
-              >
+              <motion.div key={poster} className="relative  rounded-lg overflow-hidden">
                 <Img
                   src={poster}
                   width={146}
                   height={142}
-                  alt={"Cineflicks-hero-image"+index}
+                  alt={"Cineflicks-hero-image" + index}
                   className="w-[146px] h-[142px] object-cover"
                   loading="lazy"
                 />
@@ -40,8 +36,8 @@ export function MovieGrid({ className }: { className?: string }) {
       </div>
 
       {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/60 pointer-events-none" />
     </div>
   );
 }

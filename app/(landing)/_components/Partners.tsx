@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,6 +8,9 @@ import {
 } from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
 import VideoPlayer from "./VideoPlayer";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const getPartners = async () => {
   try {
@@ -27,23 +29,36 @@ const Partners = async () => {
 
   return (
     <section className="bg-[#262626] py-12 lg:py-20">
-      <div className="container relative overflow-hidden">
+      <div className="container mx-auto flex justify-between items-center">
         <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold">Partners</h2>
+        <Button className="bg-[#F2AA4C] hover:bg-[#f2aa4cdb]" asChild>
+          <Link href={"/partner/partners"}>
+            See All <ArrowRight className="ml-2" />
+          </Link>
+        </Button>
+      </div>
+      <div className="container relative overflow-hidden">
         <div className="pt-6">
           {partners.length === 0 ? (
             <h1 className=" text-[#999999]">No partners found.</h1>
           ) : (
-            <Carousel opts={{ align: "start" }} className="w-full">
+            <Carousel
+              autoplay
+              autoplayInterval={3000}
+              orientation="horizontal"
+              opts={{ align: "start" }}
+              className="w-full"
+            >
               <CarouselContent>
                 {partners.map((partner) => (
                   <CarouselItem
                     key={partner.id}
-                    className="md:basis-1/2 lg:basis-1/3"
+                    className=" basis-full md:basis-1/2  lg:basis-1/3"
                   >
-                    <div className="p-1">
-                      <Card className="bg-[#202020] py-4 border border-[#262626]">
-                        <CardContent className="flex flex-col gap-4">
-                          <div className="flex items-center gap-4">
+                    <div className="p-2 w-full h-full">
+                      <div className="h-full space-y-4 flex flex-col justify-between p-5 rounded-[8px] bg-[#202020] py-4 border border-[#262626]">
+                        <div className="space-y-3">
+                          <div className="flex relative overflow-hidden w-full items-center gap-4">
                             <Avatar className="w-[92px] h-[90px] rounded-[8px]">
                               <AvatarImage
                                 className="w-full h-full"
@@ -56,33 +71,35 @@ const Partners = async () => {
                                 {partner.title.charAt(0)}
                               </AvatarFallback>
                             </Avatar>
-                            <div>
-                              <h4 className="text-xl lg:text-2xl font-medium">
+                            <div className="flex-1 ">
+                              <p className="text-base lg:text-xl font-medium">
                                 {partner.title}
-                              </h4>
-                              {partner.link && (
-                                <a
-                                  className="text-sm lg:text-base font-medium text-[#999]"
-                                  href={partner.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Link:{" "}
-                                  <span className="text-[#D48641]">
-                                    {partner.link}
-                                  </span>
-                                </a>
-                              )}
+                              </p>
+                              <div className="flex-1">
+                                {partner.link && (
+                                  <a
+                                    className="inline-flex items-center gap-1.5 text-sm lg:text-base text-[#999] hover:text-[#D48641] transition-colors truncate max-w-full group"
+                                    href={partner.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <span className="shrink-0">Link:</span>
+                                    <span className="truncate text-[#D48641] group-hover:underline">
+                                      {partner.link.replace(/^https?:\/\//, "")}
+                                    </span>
+                                  </a>
+                                )}
+                              </div>
                             </div>
                           </div>
-                          <p className="text-sm lg:text-base 2xl:text-xl text-[#999999]">
+                          <p className="text-sm w-full lg:text-base 2xl:text-xl text-[#999999]">
                             {partner.description}
                           </p>
-                          {partner.videoUrl && (
-                            <VideoPlayer url={partner.videoUrl} />
-                          )}
-                        </CardContent>
-                      </Card>
+                        </div>
+                        <div className="aspect-video">
+                          {partner.videoUrl && <VideoPlayer url={partner.videoUrl} />}
+                        </div>
+                      </div>
                     </div>
                   </CarouselItem>
                 ))}

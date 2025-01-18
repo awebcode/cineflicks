@@ -1,3 +1,150 @@
+// "use client";
+
+// import { useEffect, useState, useTransition } from "react";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { bep20Schema, type Bep20FormData } from "@/lib/schema";
+// import dynamic from "next/dynamic";
+// import { useSession } from "next-auth/react";
+// import useTaskStore from "@/store/useTaskStore";
+// import { cn } from "@/lib/utils";
+// import { updateWalletAddress } from "@/actions/user-actions";
+// import { toast } from "@/hooks/use-toast";
+// import PendingButton from "./common/pending-button";
+
+// // Dynamically import SuccessPopup to improve performance
+// const SuccessPopup = dynamic(() => import("./common/success-popup"), { ssr: false });
+
+// export default function SubmitAddressPage() {
+//   const [showSuccess, setShowSuccess] = useState(false);
+//   const { data: session } = useSession();
+//   const { getTasksByUser, allTasks, isSubmitted, setAsSubmitted } = useTaskStore(
+//     (state) => state
+//   );
+//   const [isPending, startTransition] = useTransition();
+//   const form = useForm<Bep20FormData>({
+//     resolver: zodResolver(bep20Schema),
+//     mode: "all",
+//     defaultValues: { address: "" },
+//   });
+//   useEffect(() => {
+//     if (!isSubmitted) {
+//       setAsSubmitted(session?.user?.isSubmitted as boolean??false);
+//     }
+//   }, [isSubmitted,session,setAsSubmitted]);
+
+//   const userTasks = getTasksByUser(session?.user?.id as string??"");
+//   const completedTasks = userTasks.filter((task) => task.completed).length;
+
+//   async function onSubmit(data: Bep20FormData) {
+//     try {
+//       startTransition(async () => {
+//         try {
+//           if (isSubmitted) {
+//             toast({
+//               variant: "destructive",
+//               title: "Error",
+//               description: "You have already submitted your address",
+//             });
+//             return;
+//           }
+//           const res = await updateWalletAddress({
+//             walletAddress: data.address,
+//             userId: session?.user?.id as string,
+//             isSubmitted: true,
+//           });
+
+//           if (res && "error" in res && res?.error) {
+//             toast({
+//               variant: "destructive",
+//               title: "Error",
+//               description: res.message,
+//             });
+//           } else {
+//             toast({
+//               title: "Success",
+//               description: res.message,
+//             });
+//             setShowSuccess(true);
+//             setAsSubmitted(true);
+//           }
+//         } catch (error) {
+//           toast({
+//             variant: "destructive",
+//             title: "Error",
+//             description: (error as Error).message || "Something went wrong",
+//           });
+//         }
+//       });
+//     } finally {
+//       form.reset();
+//     }
+//   }
+
+//   const isDisabled = userTasks.length !== allTasks.length;
+
+//   return (
+//     <div className="py-20 bg-[#1A1614] flex items-center justify-center p-4">
+//       <SuccessPopup open={showSuccess} setOpen={setShowSuccess} />
+
+//       <div className="w-full max-w-xl text-center space-y-6">
+//         <h1 className="text-3xl md:text-4xl leading-[50px] font-semibold text-white">
+//           Submit your BEP20 Address
+//         </h1>
+//         <p className="text-gray-400 max-w-lg mx-auto">
+//           Complete all tasks to submit your address.
+//         </p>
+
+//         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+//           {/* Address Input with associated label */}
+//           <div className="relative">
+//             <label htmlFor="address" className="sr-only">
+//               BEP20 Address
+//             </label>
+//             <input
+//               {...form.register("address")}
+//               id="address"
+//               type="text"
+//               placeholder="Enter your BEP20 address"
+//               disabled={isDisabled}
+//               aria-describedby={
+//                 form.formState.errors.address ? "address-error" : undefined
+//               }
+//               className={cn(
+//                 "w-full px-6 py-4 bg-[#f5a64c1d] border border-[#F5A64C] rounded-[20px] text-white placeholder:text-white focus:ring-2 focus:ring-[#F5A64C] transition-all",
+//                 { "cursor-not-allowed opacity-50": isDisabled }
+//               )}
+//             />
+//             {form.formState.errors.address && (
+//               <p id="address-error" className="mt-2 text-sm text-red-500">
+//                 {form.formState.errors.address.message}
+//               </p>
+//             )}
+//           </div>
+
+//           <button
+//             type="submit"
+//             disabled={isPending || isDisabled}
+//             className={cn(
+//               "w-full md:w-auto px-12 py-3 bg-[#F5A64C] text-white font-semibold rounded-xl hover:bg-[#E89539] transition-colors",
+//               { "cursor-not-allowed opacity-50": isPending || isDisabled }
+//             )}
+//           >
+//             {isPending ? "SUBMITTING..." : "SUBMIT"}
+//           </button>
+
+//           <p className="text-gray-400 text-lg">
+//             {isSubmitted ? (
+//               <span className="text-emerald-500">You have submitted your address</span>
+//             ) : (
+//               `You have completed ${completedTasks} out of ${allTasks.length} tasks`
+//             )}
+//           </p>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
@@ -8,9 +155,10 @@ import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import useTaskStore from "@/store/useTaskStore";
 import { cn } from "@/lib/utils";
-import { updateWalletAddress } from "@/actions/user-actions";
+import { updateWalletAddress } from "@/actions/user-actions"; // Import actions
 import { toast } from "@/hooks/use-toast";
 import PendingButton from "./common/pending-button";
+import { fetchUserTasks } from "@/actions/task-actions";
 
 // Dynamically import SuccessPopup to improve performance
 const SuccessPopup = dynamic(() => import("./common/success-popup"), { ssr: false });
@@ -18,70 +166,66 @@ const SuccessPopup = dynamic(() => import("./common/success-popup"), { ssr: fals
 export default function SubmitAddressPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const { data: session } = useSession();
-  const { getTasksByUser, allTasks, isSubmitted, setAsSubmitted } = useTaskStore(
-    (state) => state
-  );
+  const { setTasks, getTasksByUser, allTasks, isSubmitted, setAsSubmitted } =
+    useTaskStore((state) => state);
   const [isPending, startTransition] = useTransition();
+
+  // Form setup
   const form = useForm<Bep20FormData>({
     resolver: zodResolver(bep20Schema),
     mode: "all",
     defaultValues: { address: "" },
   });
-  useEffect(() => {
-    if (!isSubmitted) {
-      setAsSubmitted(session?.user?.isSubmitted as boolean??false);
-    }
-  }, [isSubmitted,session,setAsSubmitted]);
 
-  const userTasks = getTasksByUser(session?.user?.id as string??"");
+  // Fetch and sync tasks on page load
+  useEffect(() => {
+    async function syncTasks() {
+      if (session?.user?.id) {
+        const tasks = await fetchUserTasks(session.user.id); // Server call to fetch tasks
+        setTasks((tasks as any) || []);
+        if (!isSubmitted) {
+          setAsSubmitted((session?.user?.isSubmitted as boolean) ?? false);
+        }
+      }
+    }
+    syncTasks();
+  }, [session, setTasks, setAsSubmitted, isSubmitted]);
+
+  const userTasks = getTasksByUser(session?.user?.id || "");
   const completedTasks = userTasks.filter((task) => task.completed).length;
 
+  // Handle form submission
   async function onSubmit(data: Bep20FormData) {
     try {
       startTransition(async () => {
-        try {
-          if (isSubmitted) {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: "You have already submitted your address",
-            });
-            return;
-          }
-          const res = await updateWalletAddress({
-            walletAddress: data.address,
-            userId: session?.user?.id as string,
-            isSubmitted: true,
-          });
+        const res = await updateWalletAddress({
+          walletAddress: data.address,
+          userId: session?.user?.id || "",
+          isSubmitted: true,
+        });
 
-          if (res && "error" in res && res?.error) {
-            toast({
-              variant: "destructive",
-              title: "Error",
-              description: res.message,
-            });
-          } else {
-            toast({
-              title: "Success",
-              description: res.message,
-            });
-            setShowSuccess(true);
-            setAsSubmitted(true);
-          }
-        } catch (error) {
+        if (res && res.error) {
           toast({
             variant: "destructive",
             title: "Error",
-            description: (error as Error).message || "Something went wrong",
+            description: res.message,
           });
+        } else {
+          toast({
+            title: "Success",
+            description: res.message,
+          });
+          setShowSuccess(true);
+          setAsSubmitted(true);
         }
       });
     } finally {
       form.reset();
     }
   }
-
-  const isDisabled = userTasks.length !== allTasks.length;
+  // Adjust submission criteria
+  const totalTasks = allTasks.length;
+  const isDisabled = completedTasks < totalTasks - 1; // Exclude the last task
 
   return (
     <div className="py-20 bg-[#1A1614] flex items-center justify-center p-4">
@@ -96,7 +240,7 @@ export default function SubmitAddressPage() {
         </p>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Address Input with associated label */}
+          {/* Address Input */}
           <div className="relative">
             <label htmlFor="address" className="sr-only">
               BEP20 Address
@@ -135,9 +279,11 @@ export default function SubmitAddressPage() {
 
           <p className="text-gray-400 text-lg">
             {isSubmitted ? (
-              <span className="text-emerald-500">You have submitted your address</span>
+              <span className="text-emerald-500">
+                You have already submitted your address
+              </span>
             ) : (
-              `You have completed ${completedTasks} out of ${allTasks.length} tasks`
+              `You have completed ${completedTasks} out of ${totalTasks} tasks`
             )}
           </p>
         </form>

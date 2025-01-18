@@ -3,6 +3,7 @@ import useTaskStore from "@/store/useTaskStore";
 import { useSession } from "next-auth/react";
 import { WorkWithUsGrid } from "./work-with-us-grid";
 
+
 export default function WorkWithUsPage() {
   const session = useSession();
   const { getTasksByUser, allTasks } = useTaskStore((state) => state);

@@ -31,7 +31,7 @@ interface SocialCardProps {
 
 function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const { addTask, updateTask, getTaskById, isSubmitted } = useTaskStore(
+  const { addTask, updateTask, getTaskById, isSubmitted,getTaskByPlatform } = useTaskStore(
     (state) => state
   );
   const session = useSession();
@@ -126,7 +126,8 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
     }
   };
 
-  const task = getTaskById(id);
+  const task = getTaskByPlatform(platform)||getTaskById(id); //id
+  console.log({ task });
 
   return (
     <Card className="bg-[#2A2D35] w-full md:w-[378px]  border-none text-white">
@@ -134,7 +135,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
           {task?.completed && session?.data?.user ? (
-            <div className="w-fit px-4 py-1 rounded-[8px] bg-[#29B41D] text-white">
+            <div className="w-fit px-4 py-1 rounded-[8px] bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white">
               Completed
             </div>
           ) : task && session?.data?.user ? (
@@ -146,7 +147,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
             </Button>
           ) : (
             <Button
-              className="w-fit bg-green-500 hover:bg-green-400 cursor-pointer"
+              className="w-fit bg-[#F2AA4C] hover:bg-[#E89539] cursor-pointer"
               onClick={handleFollow}
             >
               Start Task
@@ -154,7 +155,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
           )}
 
           <Button
-            className="w-fit bg-green-500 hover:bg-green-400 cursor-pointer"
+            className="w-fit bg-[#F2AA4C] hover:bg-[#E89539] cursor-pointer"
             onClick={() => window.open(socialUrl, "_blank")}
           >
             Watch
@@ -163,8 +164,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on{" "}
-          <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -199,7 +199,7 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
                     className={cn(
                       "flex-1 h-[43px] w-[146px] font-medium text-black",
                       isFollowed || task
-                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-not-allowed"
+                        ? "bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
                     disabled={isFollowed || !!task}
@@ -219,12 +219,12 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
                     className={cn(
                       "flex-1 h-[43px] w-[146px] font-medium text-black",
                       isSubmitted || task?.completed
-                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-not-allowed"
+                        ? "bg-[#F5A64C]/80 hover:bg-[#F5A64C]/80 text-white cursor-not-allowed"
                         : "bg-[#F5A64C] hover:bg-[#E89539]"
                     )}
                   >
                     {isSubmitted || task?.completed
-                      ? "Verified✅"
+                      ? "Verified"
                       : isPending
                       ? "Verifying..."
                       : "Verify"}

@@ -13,10 +13,10 @@ const HowCanUseToken = () => {
             description="Lorem ipsum dolor amet dummy content here ..."
           />
           <div className="space-y-2">
-            <p className="text-lg lg:text-xl xl:text-3xl font-medium uppercase">
+            <p className="text-lg lg:text-xl xl:text-5xl font-bold uppercase">
               How can I use
             </p>
-            <p className="text-2xl lg:text-3xl xl:text-4xl  font-medium uppercase">
+            <p className="text-2xl lg:text-3xl xl:text-5xl  font-medium uppercase">
               my <b className="text-[#F2AA4C]">$CNF tokens?</b>
             </p>
           </div>

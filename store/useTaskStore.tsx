@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { zustandIndexedDBStorage } from "./usePersist";
-import  { InitialTasks } from "@/constants/data";
+import { InitialTasks } from "@/constants/data";
 
 interface Task {
   id: string | number;
@@ -16,9 +16,11 @@ interface Task {
 interface TaskState {
   tasks: Task[];
   allTasks: typeof InitialTasks;
+  setTasks: (tasks: Task[]|[]) => void;
   addTask: (task: Task) => void;
   updateTask: (taskId: string | number, updatedTask: Partial<Task>) => void;
   getTaskById: (taskId: string | number) => Task | undefined;
+  getTaskByPlatform: (platform: string) => Task | undefined;
   removeTask: (taskId: string | number) => void;
   getTasksByUser: (userId: string) => Task[];
   isSubmitted: boolean;
@@ -31,7 +33,37 @@ const useTaskStore = create<TaskState>()(
       tasks: [],
       allTasks: InitialTasks,
       isSubmitted: false,
-      
+
+      setTasks: (newTasks) =>
+        set((state) => {
+          const updatedTasks = newTasks.map((newTask) => {
+            const existingTask = state.tasks.find((task) => task.id === newTask.id);
+
+            // Merge existing task with new task and set `completed` to true
+            if (existingTask) {
+              return {
+                ...existingTask,
+                ...newTask,
+                completed: true,
+              };
+            }
+
+            // Add new task with `completed` set to true
+            return {
+              ...newTask,
+              completed: true,
+            };
+          });
+
+          // Retain tasks not included in `newTasks` and add/merge `updatedTasks`
+          const nonDuplicateTasks = state.tasks.filter(
+            (task) => !newTasks.some((newTask) => newTask.id === task.id)
+          );
+
+          return {
+            tasks: [...nonDuplicateTasks, ...updatedTasks],
+          };
+        }),
 
       // Add or update a task in the store
       addTask: (task) =>
@@ -52,7 +84,7 @@ const useTaskStore = create<TaskState>()(
 
       // Retrieve a task by its ID
       getTaskById: (taskId) => get().tasks.find((task) => task.id === taskId),
-
+      getTaskByPlatform: (platform) => get().tasks.find((task) => task.platform === platform),
       // Update a task's properties
       updateTask: (taskId, updatedTask) =>
         set((state) => ({
@@ -80,4 +112,3 @@ const useTaskStore = create<TaskState>()(
 );
 
 export default useTaskStore;
-

@@ -5,11 +5,11 @@ const HowMuchSubscription = () => {
         <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-center">
           How much is a Cineflicks subscription?
         </h2>
-        <div className="w-full o  pt-10 lg:pt-0 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:right-6   2xl:max-w-[700px]  px-8   text-center lg:text-right space-y-4 max-w-[600px] xl:max-w-[680px] ">
-          <p className="text-xl lg:text-2xl xl:text-3xl font-medium text-[#F2AA4C]">
-            <b>Free!</b> Yes, you read that right!
+        <div className="w-full o  pt-10 lg:pt-0 lg:absolute lg:top-1/2 lg:-translate-y-1/2 lg:right-6   2xl:max-w-[600px]  px-8   text-center lg:text-right space-y-4 max-w-[600px] xl:max-w-[680px] ">
+          <p className="text-xl lg:text-2xl xl:text-3xl font-bold text-[#F2AA4C]">
+            <b>FREE!</b> Yes, you read that right!
           </p>
-          <p className="text-xl pt-1 lg:text-2xl xl:text-3xl  font-normal  !leading-[130%] ">
+          <p className="text-xl pt-1 lg:text-2xl xl:text-3xl   font-semibold  !leading-[42px] !tracking-[-0.24px] text-right ">
             Simply{" "}
             <b className="lg:bg-[#8B5D2BD4] rounded-full lg:px-4 lg:py-0.5 bg-opacity-75">
               connect your wallet,
@@ -17,7 +17,7 @@ const HowMuchSubscription = () => {
             sign up and <b className="text-[#F2AA4C]"> start streaming.</b>
             There will be premium features and content coming in the future, but
             there is
-            <b className="text-[#F2AA4C]"> no subscription cost.</b>
+            <b className="text-[#F2AA4C] uppercase"> no subscription cost.</b>
           </p>
         </div>
       </div>
