@@ -10,7 +10,7 @@ const Hero = () => {
         className="absolute hidden lg:block object-cover w-full h-full z-0 inset-0"
       />
 
-      <div className="container h- min-h-screen h-full  relative">
+      <div className="container  min-h-screen h-full  relative">
         <div className="pt-4 lg:pt-10  xl:pt-16 2xl:pt-20">
           <Image
             src={"/imgs/home/logo.png"}
@@ -20,13 +20,22 @@ const Hero = () => {
             className="w-[180px] lg:w-[280px]  xl:w-[340px] 2xl:w-[360px]"
           />
         </div>
-        <div className="lg:max-w-[500px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-20 2xl:bottom-10 max-w-[600px]">
-          <p className="text-3xl xl:text-4xl  font-normal">
+        <div className="lg:max-w-[800px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-24 2xl:bottom-10 max-w-[600px]">
+          <p
+            className="text-2xl xl:text-5xl font-normal"
+            style={{
+              lineHeight: "normal", // Default for smaller screens
+              ...(typeof window !== "undefined" &&
+                window.innerWidth >= 1024 && {
+                  lineHeight: "80px", // Apply only for desktop (lg and above)
+                }),
+            }}
+          >
             The{" "}
-            <span className="font-bold bg-yellow-600 rounded-full py-0.5 px-5">
+            <span className="bg-[#f2aa4c94] rounded-full font-bold tracking-[1.43px] px-2">
               Blockchain-based
             </span>{" "}
-            Streaming Revolution Has Arrived
+            <span className="my-1">Streaming Revolution Has Arrived</span>
           </p>
         </div>
       </div>

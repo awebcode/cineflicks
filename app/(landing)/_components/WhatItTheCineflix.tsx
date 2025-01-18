@@ -5,27 +5,26 @@ const WhatItTheCineflix = () => {
     <section className=" relative overflow-hidden py-16 ">
       <div className="container relative   z-10">
         <div className="pt-6 flex flex-col lg:flex-row lg:items-start gap-10">
-          <div className="basis-fulll lg:basis-[40%] mt-14 space-y-6">
+          <div className="basis-full lg:basis-[50%] mt-14 space-y-6">
             <h2 className="text-3xl lg:text-4xl xl:text-5xl d font-bold">
               What is Cineflicks?
             </h2>
-            <p className="text-lg lg:text-xl xl:text-3xl font-normal ">
+            <p className="text-lg lg:text-2xl xl:text-3xl font-normal ">
               <b className="text-[#F2AA4C]">Cineflicks</b> is the world’s first
               incentivised streaming platform, blending entertainment and{" "}
               <b className="text-[#F2AA4C] block">crypto rewards.</b>
             </p>
-            <p className="text-lg lg:text-xl  font-normal ">
-              <b className="text-[#F2AA4C]">Cineflicks</b> offers a unique
-              experience where viewers earn{" "}
-              <b className="text-[#F2AA4C]">CNF tokens</b> for every hour
-              watched.
+            <p className="text-lg lg:text-2xl xl:text-3xl font-normal">
+              <b className="text-[#F2AA4C]">Cineflicks</b> offers a unique experience
+              where viewers earn <b className="text-[#F2AA4C]">CNF tokens</b> for every
+              hour watched.
             </p>
           </div>
-          <div className="relative basis-full lg:basis-[60%]">
+          <div className="relative basis-full lg:basis-[50%]">
             <Image
-              width={1054}
-              height={742}
-              className="relative z-30 -mt-6 "
+              width={1089}
+              height={1051}
+              className="relative z-30 -mt-6 object-contain"
               src="/imgs/home/whatis.png"
               alt="what is cineflicks"
             />
