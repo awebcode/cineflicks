@@ -25,7 +25,7 @@ const HowMuchSubscription = () => {
         <div>
           <img
             src="/imgs/home/wth 1.png"
-            className="max-w-[22rem] xl:max-w-[30rem] 2xl:max-w-max"
+            className="w-full md:max-w-[22rem] xl:max-w-[30rem] 2xl:max-w-max"
             alt="wth 1.png"
           />
         </div>
