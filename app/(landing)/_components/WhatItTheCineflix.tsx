@@ -1,3 +1,4 @@
+import HeroVideoDialog from "@/components/ui/hero-video-dialog";
 import Image from "next/image";
 
 const WhatItTheCineflix = () => {
@@ -14,7 +15,7 @@ const WhatItTheCineflix = () => {
               incentivised streaming platform, blending entertainment and{" "}
               <b className="text-[#F2AA4C] block">crypto rewards.</b>
             </p>
-            <p className="text-lg lg:text-xl  font-normal ">
+            <p className="text-lg lg:text-xl xl:text-3xl font-normal">
               <b className="text-[#F2AA4C]">Cineflicks</b> offers a unique
               experience where viewers earn{" "}
               <b className="text-[#F2AA4C]">CNF tokens</b> for every hour
@@ -22,12 +23,20 @@ const WhatItTheCineflix = () => {
             </p>
           </div>
           <div className="relative basis-full lg:basis-[60%]">
-            <Image
+            {/* <Image
               width={1054}
               height={742}
               className="relative z-30 -mt-6 "
               src="/imgs/home/whatis.png"
               alt="what is cineflicks"
+            /> */}
+
+            <HeroVideoDialog
+              className="w-full aspect-video relative z-30 !shadow-none border-none -mt-6 "
+              animationStyle="from-center"
+              videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
+              thumbnailSrc="/imgs/home/whatis.png"
+              thumbnailAlt="How to Setup Helper Wallet"
             />
           </div>
         </div>

@@ -20,12 +20,14 @@ const Hero = () => {
             className="w-[180px] lg:w-[280px]  xl:w-[340px] 2xl:w-[360px]"
           />
         </div>
-        <div className="lg:max-w-[500px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-20 2xl:bottom-10 max-w-[600px]">
+        <div className="lg:max-w-[700px] absolute left-8 bottom-1/2 translate-y-1/2 lg:translate-y-[10px] lg:bottom-24 2xl:bottom-28 max-w-[600px]">
           <p className="text-3xl xl:text-4xl  font-normal">
             The{" "}
-            <span className="font-bold bg-yellow-600 rounded-full py-0.5 px-5">
+            <span className="font-bold bg-yellow-600/45 rounded-full py-0.5 px-5">
               Blockchain-based
             </span>{" "}
+          </p>
+          <p className="text-3xl pt-2 lg:pt-5 xl:text-4xl  font-normal">
             Streaming Revolution Has Arrived
           </p>
         </div>
