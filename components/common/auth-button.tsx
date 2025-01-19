@@ -4,6 +4,7 @@ import UserDropdown from "./user-dropdown";
 
 export default async function AuthButton() {
   const session = await auth(); // Fetch the current session
+  console.log({ session });
 
   // If user is logged in, show user details and dropdown menu
   if (session?.user) {

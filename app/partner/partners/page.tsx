@@ -38,7 +38,7 @@ const PartnersPage = async () => {
   return (
     <section className="bg-[#262626] py-12 lg:py-20">
       <div className="container mx-auto">
-        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6">
+        <h2 className="text-xl lg:text-2xl  font-bold mb-6">
           All <span className="text-[#F2AA4C]">Partners ({partners.length})</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
