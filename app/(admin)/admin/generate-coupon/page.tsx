@@ -54,10 +54,22 @@ const GenerateCouponPage = () => {
     useInfluencerInfiniteQuery(search);
 
   // Dynamic duration options
-  const durationOptions = Array.from({ length: 30 }, (_, i) => ({
-    value: `${i + 1}`,
-    label: `${i + 1} ${i === 0 ? "day" : "days"}`,
-  }));
+  // Dynamic duration options
+  const durationOptions = [
+    ...Array.from({ length: 30 }, (_, i) => ({
+      value: `${i + 1}`,
+      label: `${i + 1} ${i === 0 ? "day" : "days"}`,
+    })),
+    ...Array.from({ length: 11 }, (_, i) => {
+      const months = i + 2; // Start from 2 months
+      const days = months * 30; // Approximate days in a month
+      return {
+        value: `${days}`,
+        label: `${months} ${months === 1 ? "month" : "months"}`,
+      };
+    }),
+    { value: "365", label: "1 year" },
+  ];
 
   // Dynamic download options
   const downloadOptions = [
@@ -175,10 +187,7 @@ const GenerateCouponPage = () => {
         <form onSubmit={handleSubmit(generateCoupon)}>
           <div className="flex gap-4">
             <div className="flex-1">
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-gray-700"
-              >
+              <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
                 Name
               </label>
               <input
@@ -189,9 +198,7 @@ const GenerateCouponPage = () => {
                 placeholder="Enter name"
               />
               {errors.name && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.name.message}
-                </p>
+                <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
               )}
             </div>
 
@@ -221,9 +228,7 @@ const GenerateCouponPage = () => {
                 )}
               />
               {errors.duration && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.duration.message}
-                </p>
+                <p className="mt-2 text-sm text-red-500">{errors.duration.message}</p>
               )}
             </div>
           </div>

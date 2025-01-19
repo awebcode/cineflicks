@@ -57,7 +57,7 @@ export default function DashboardSidebar() {
           </div>
           <SidebarMenu className="my-3">
             <Link href={"/admin"} className="flex items-center">
-              <LayoutDashboard className="mr-2 text-[#FFD700]" /> Dashboard
+              <LayoutDashboard className="mr-2 text-[#FFAA4C]" /> Dashboard
             </Link>
           </SidebarMenu>
           <SidebarGroupLabel className="my-3">Categories</SidebarGroupLabel>
