@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import Footer from "@/components/common/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { SessionProvider } from "next-auth/react";
@@ -38,7 +37,6 @@ export default async function RootLayout({
             <ReactQueryProvider>{children}</ReactQueryProvider>
           </SessionProvider>
         </div>
-        <Footer />
       </body>
     </html>
   );

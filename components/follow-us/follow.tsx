@@ -3,7 +3,7 @@ import { SocialIcons } from "./social-icons";
 
 export default function FollowPage() {
   return (
-    <main className="relative flex flex-col items-center justify-center gap-12 py-16 px-6 bg-gray-900 text-white">
+    <main className="relative flex flex-col items-center justify-center gap-12 py-16 xl:py-24 px-6 bg-gray-900 text-white">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 z-0 opacity-[79%]"
