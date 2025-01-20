@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import HeroVideoDialog from "./ui/hero-video-dialog";
 
 const HowToSetupHelperWallet = () => {
@@ -38,21 +37,23 @@ const HowToSetupHelperWallet = () => {
         </div>
 
         <motion.div
-          className="relative z-10 rounded-lg overflow-hidden shadow-2xl"
+          className="relative z-10 rounded-lg overflow-hidden shadow-0"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {isClient && (
             <HeroVideoDialog
-              className="w-full aspect-video"
+              className="w-full shadow-2xl aspect-video"
               animationStyle="from-center"
-              videoSrc="https://www.youtube.com/embed/qh3NGpYRG3I?si=4rb-zSdDkVK9qxxb"
+              videoSrc="https://www.youtube.com/embed/H52xfW-8YZE"
               thumbnailSrc="/setup-wallet.png"
               thumbnailAlt="How to Setup Helper Wallet"
             />
           )}
-          {!isClient && <div className="w-full aspect-video bg-gray-900 animate-pulse" />}
+          {!isClient && (
+            <div className="w-full shadow-2xl aspect-video bg-gray-900 animate-pulse" />
+          )}
         </motion.div>
       </div>
 

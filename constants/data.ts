@@ -39,12 +39,4 @@ export const InitialTasks = [
       "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
     socialUrl: "https://www.youtube.com",
   },
-  {
-    id: 6,
-    platform: "TikTok",
-    status: "pending",
-    description:
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
-    socialUrl: "https://www.tiktok.com",
-  },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import useTaskStore from "@/store/useTaskStore";
 
 import dynamic from "next/dynamic";
@@ -11,9 +12,17 @@ const SocialCard = dynamic(() => import("./social-card"), {
 export function WorkWithUsGrid() {
   const { allTasks } = useTaskStore((state) => state);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 xl:gap-10">
-      {allTasks.map((task) => (
-        <SocialCard key={task?.id} {...task} />
+    <div className="grid grid-cols-12 gap-y-8 md:gap-5 xl:gap-10">
+      {allTasks.map((task, index) => (
+        <SocialCard
+          className={cn(
+            index <= 2
+              ? "col-span-12 md:col-span-6 lg:col-span-4"
+              : "col-span-12 md:col-span-6 lg:col-span-6"
+          )}
+          key={task?.id}
+          {...task}
+        />
       ))}
     </div>
   );

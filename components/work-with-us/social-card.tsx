@@ -27,9 +27,16 @@ interface SocialCardProps {
   platform: string;
   description: string;
   socialUrl: string;
+  className?: string;
 }
 
-function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
+function SocialCard({
+  className,
+  id,
+  platform,
+  description,
+  socialUrl,
+}: SocialCardProps) {
   const [isFollowed, setIsFollowed] = useState(false);
   const { addTask, updateTask, getTaskById, isSubmitted, getTaskByPlatform } =
     useTaskStore((state) => state);
@@ -129,7 +136,9 @@ function SocialCard({ id, platform, description, socialUrl }: SocialCardProps) {
   console.log({ task });
 
   return (
-    <Card className="bg-[#2A2D35] w-full  border-none text-white">
+    <Card
+      className={cn(className, "bg-[#2A2D35] w-full  border-none text-white")}
+    >
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
