@@ -17,8 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import EditInfluencer from "./EditInfluencer";
 import type { Influencer } from "@/hooks/useInfluencer";
-
-
+import Image from "next/image";
 
 interface TableComponentProps {
   influencers: Influencer[];
@@ -46,13 +45,13 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
   };
   useEffect(() => {
     if (isDeleting) {
-    toast({
-      title: "Influencer deleting...",
-    })
-    setTimeout(() => {
-      setSelectedInfluencer(null);
-    }, 1000);
-   }
+      toast({
+        title: "Influencer deleting...",
+      });
+      setTimeout(() => {
+        setSelectedInfluencer(null);
+      }, 1000);
+    }
   }, [isDeleting]);
 
   return (
@@ -63,6 +62,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
           <TableRow>
             <TableHead>Username</TableHead>
             <TableHead>Coupon Code</TableHead>
+            <TableHead>Image</TableHead>
             <TableHead>Total Users</TableHead>
             <TableHead>Expire Time</TableHead>
             <TableHead>Actions</TableHead>
@@ -73,7 +73,19 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
             <TableRow key={influencer.id}>
               <TableCell>{influencer.name}</TableCell>
               <TableCell>{influencer.couponCode}</TableCell>
-              <TableCell>{influencer.totalUsers}</TableCell>
+              <TableCell>
+                {influencer.image ? (
+                  <Image
+                    src={influencer.image}
+                    alt={`${influencer.name}'s image`}
+                    width={50}
+                    height={50}
+                    className="w-12 h-12 object-cover rounded-full"
+                  />
+                ) : (
+                  "No image"
+                )}
+              </TableCell>
               <TableCell>
                 <RemainingTime expireTime={influencer.expireTime} />
               </TableCell>
@@ -103,6 +115,7 @@ export const TableComponent: React.FC<TableComponentProps> = ({ influencers }) =
           id={selectedInfluencer.id}
           name={selectedInfluencer.name}
           couponCode={selectedInfluencer.couponCode}
+          image={selectedInfluencer.image as any}
           expireTime={selectedInfluencer.expireTime as any}
         />
       )}
@@ -139,4 +152,3 @@ const RemainingTime = ({ expireTime }: { expireTime: string | Date }) => {
     <span>Remaining: {time}</span>
   );
 };
-

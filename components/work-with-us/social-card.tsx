@@ -133,7 +133,6 @@ function SocialCard({
   };
 
   const task = getTaskByPlatform(platform) || getTaskById(id); //id
-  console.log({ task });
 
   return (
     <Card

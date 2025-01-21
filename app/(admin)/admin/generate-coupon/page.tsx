@@ -9,20 +9,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import {
-  useInfluencerInfiniteQuery,
-  type Influencer,
-} from "@/hooks/useInfluencer";
+import { useInfluencerInfiniteQuery, type Influencer } from "@/hooks/useInfluencer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { Copy, CopyCheck, Loader } from "lucide-react";
+import { Copy, CopyCheck, Loader, Upload, X } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { TableComponent } from "./TableComponent";
+import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
 
-// Zod schema for validation
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   duration: z.string().min(1, "Duration is required"),
@@ -39,13 +37,17 @@ const GenerateCouponPage = () => {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
   const [totalInfluencersCount, setTotalInfluencersCount] = useState<number>(0);
   const [downloadType, setDownloadType] = useState<string>("csv");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const debouncedSetSearch = debounce(setSearch, 300);
 
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
@@ -53,16 +55,14 @@ const GenerateCouponPage = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
     useInfluencerInfiniteQuery(search);
 
-  // Dynamic duration options
-  // Dynamic duration options
   const durationOptions = [
     ...Array.from({ length: 30 }, (_, i) => ({
       value: `${i + 1}`,
       label: `${i + 1} ${i === 0 ? "day" : "days"}`,
     })),
     ...Array.from({ length: 11 }, (_, i) => {
-      const months = i + 2; // Start from 2 months
-      const days = months * 30; // Approximate days in a month
+      const months = i + 2;
+      const days = months * 30;
       return {
         value: `${days}`,
         label: `${months} ${months === 1 ? "month" : "months"}`,
@@ -71,7 +71,6 @@ const GenerateCouponPage = () => {
     { value: "365", label: "1 year" },
   ];
 
-  // Dynamic download options
   const downloadOptions = [
     { value: "csv", label: "CSV" },
     { value: "excel", label: "Excel" },
@@ -81,7 +80,14 @@ const GenerateCouponPage = () => {
   const generateCoupon = async (data: FormData) => {
     setIsGenerating(true);
     try {
-      const res = await createInfluencer(data.name, parseInt(data.duration));
+      if (!imageUrl) {
+        throw new Error("Please upload an image first");
+      }
+      const res = await createInfluencer(
+        data.name,
+        Number.parseInt(data.duration),
+        imageUrl
+      );
       if ("error" in res) {
         toast({
           title: "Error",
@@ -99,11 +105,74 @@ const GenerateCouponPage = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to create influencer",
+        description:
+          error instanceof Error ? error.message : "Failed to create influencer",
         variant: "destructive",
       });
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setIsUploading(true);
+      try {
+        const uploadedUrl = await uploadToCloudinary(file, "photo");
+        setImageUrl(uploadedUrl);
+        toast({
+          title: "Success",
+          description: "Image uploaded successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to upload image",
+          variant: "destructive",
+        });
+        // Reset the file input on error
+        event.target.value = "";
+        setSelectedImage(null);
+      } finally {
+        setIsUploading(false);
+      }
+    } else {
+      // User cancelled file selection, reset states
+      setSelectedImage(null);
+      setImageUrl(null);
+    }
+  };
+
+  const handleImageDelete = async () => {
+    if (imageUrl) {
+      setIsDeleting(true);
+      try {
+        await deleteFromCloudinary(imageUrl);
+        setSelectedImage(null);
+        setImageUrl(null);
+        // Reset the file input
+        const fileInput = document.getElementById("image-upload") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+        toast({
+          title: "Success",
+          description: "Image deleted successfully",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete image",
+          variant: "destructive",
+        });
+      } finally {
+        setIsDeleting(false);
+      }
+    } else {
+      // If there's no imageUrl but there's a selectedImage, just reset the states
+      setSelectedImage(null);
+      const fileInput = document.getElementById("image-upload") as HTMLInputElement;
+      if (fileInput) fileInput.value = "";
     }
   };
 
@@ -182,11 +251,10 @@ const GenerateCouponPage = () => {
 
   return (
     <div className="flex flex-col gap-6 p-6 max-w-4xl mx-auto">
-      {/* Section 1: Coupon Generation */}
       <div className="shadow-md rounded-lg p-6 flex flex-col gap-4">
         <form onSubmit={handleSubmit(generateCoupon)}>
-          <div className="flex gap-4">
-            <div className="flex-1">
+          <div className="flex flex-wrap md:flex-nowrap gap-4">
+            <div className="w-full">
               <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
                 Name
               </label>
@@ -202,7 +270,7 @@ const GenerateCouponPage = () => {
               )}
             </div>
 
-            <div className="flex-1 h-full">
+            <div className="w-full h-full">
               <label
                 htmlFor="duration"
                 className="block text-sm font-semibold text-gray-700"
@@ -233,10 +301,66 @@ const GenerateCouponPage = () => {
             </div>
           </div>
 
+          <div className="flex mt-4 gap-4 items-center">
+            <div className="w-full">
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <label
+                htmlFor="image-upload"
+                className="w-full md:w-1/2 h-full inline-flex items-center justify-center px-4 py-2 bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors cursor-pointer"
+              >
+                <Upload className="mr-2" size={20} />
+                {isUploading ? "Uploading..." : "Upload Image"}
+              </label>
+            </div>
+            {(selectedImage || imageUrl || isUploading) && (
+              <div className="flex items-center">
+                <div className="relative w-32 h-32">
+                  {isUploading ? (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-md">
+                      <Loader className="animate-spin" size={32} />
+                    </div>
+                  ) : (
+                    <Image
+                      src={
+                        selectedImage
+                          ? URL.createObjectURL(selectedImage)
+                          : imageUrl || "/placeholder.svg"
+                      }
+                      alt="Uploaded"
+                      fill
+                      objectFit="cover"
+                      className="rounded-md"
+                    />
+                  )}
+                </div>
+                {(selectedImage || imageUrl) && (
+                  <button
+                    type="button"
+                    onClick={handleImageDelete}
+                    className="ml-2 text-red-500 hover:text-red-700 disabled:opacity-50"
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <Loader className="animate-spin" size={20} />
+                    ) : (
+                      <X size={20} />
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
           <div className="flex mt-4">
             <PrimaryButton
               type="submit"
-              disabled={isGenerating}
+              disabled={isGenerating || !imageUrl || !isValid}
               className="px-12 py-4 bg-[#F5A64C] text-black font-semibold rounded-xl hover:bg-[#E89539] transition-colors disabled:opacity-50"
             >
               {isGenerating ? "Generating..." : "Generate Coupon"}
@@ -249,7 +373,7 @@ const GenerateCouponPage = () => {
             <div className="flex items-center gap-2 w-full">
               <input
                 type="text"
-                value={`${process.env.NEXT_PUBLIC_APP_URL}/${couponCode}`}
+                value={`${process.env.NEXT_PUBLIC_APP_URL}/campaign?couponCode=${couponCode}`}
                 readOnly
                 className="w-full max-w-full px-4 py-3 bg-[#1E1E1E] text-white rounded-xl border border-[#F5A64C] focus:outline-none"
               />
@@ -264,7 +388,6 @@ const GenerateCouponPage = () => {
         )}
       </div>
 
-      {/* Section 2: Recent Influencers and Table */}
       <div className="shadow-md rounded-lg p-6 flex flex-col gap-4">
         <div className="flex flex-wrap md:flex-nowrap justify-between items-center mb-4">
           <h1>Recent Influencers ({totalInfluencersCount})</h1>
@@ -297,11 +420,11 @@ const GenerateCouponPage = () => {
             />
           </div>
         </div>
-        <div className="shadow-md rounded-lg p-6 flex flex-col gap-4"></div>
-        {isLoading && <Loader className="mx-auto h-6 w-6 animate-spin" />}
-        <TableComponent influencers={influencers || []} />
+        <div className="shadow-md rounded-lg p-6 flex flex-col gap-4">
+          {isLoading && <Loader className="mx-auto h-6 w-6 animate-spin" />}
+          <TableComponent influencers={influencers || []} />
+        </div>
 
-        {/* Load more button */}
         {hasNextPage && (
           <button
             onClick={() => fetchNextPage()}

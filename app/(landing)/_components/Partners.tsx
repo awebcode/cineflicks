@@ -30,10 +30,10 @@ const Partners = async () => {
   return (
     <section className="bg-[#262626] py-12 lg:py-20">
       <div className="container mx-auto flex justify-between items-center">
-        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold">Partners</h2>
+        <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold">Our Partners</h2>
         <Button className="bg-[#F2AA4C] hover:bg-[#f2aa4cdb]" asChild>
           <Link href={"/partner/partners"}>
-            See All <ArrowRight className="ml-2" />
+            View All <ArrowRight className="ml-2" />
           </Link>
         </Button>
       </div>

@@ -92,7 +92,7 @@ const Card = ({
         <h4 className="text-xl xl:text-2xl uppercase  text-white font-normal">
           {title}
         </h4>
-        <p className="text-sm lg:text-base">{description}</p>
+        {/* <p className="text-sm lg:text-base">{description}</p> */}
       </div>
     </div>
   );

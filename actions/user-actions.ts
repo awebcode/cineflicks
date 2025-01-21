@@ -67,7 +67,7 @@ export const deleteUser = async (userId: string) => {
 export const updateUser = async (formData: UpdateUserArgs) => {
   try {
     const { userId, walletAddress, name, email, role, couponCode } =
-      await updateUserSchema.partial().parseAsync(formData);
+     formData
     const data = await prisma.user.update({
       where: {
         id: userId,

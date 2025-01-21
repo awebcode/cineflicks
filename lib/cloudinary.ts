@@ -15,7 +15,6 @@ export async function uploadToCloudinary(file: File, type: "photo" | "video") {
 
   try {
     while (offset < fileSize) {
-      console.log({ offset, fileSize });
       const chunk = file.slice(offset, offset + chunkSize);
       const arrayBuffer = await chunk.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);

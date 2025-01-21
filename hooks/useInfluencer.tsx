@@ -7,6 +7,7 @@ export interface Influencer {
   id: string;
   name: string;
   couponCode: string;
+  image: string|null;
   expireTime: Date;
   totalUsers: number;
 }

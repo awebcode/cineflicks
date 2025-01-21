@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import TAN from "tailwindcss-animate";
+import LineClamp from "@tailwindcss/line-clamp";
 export default {
   darkMode: ["class"],
   content: [
@@ -120,5 +121,5 @@ export default {
       },
     },
   },
-  plugins: [TAN],
+  plugins: [TAN, LineClamp],
 } satisfies Config;

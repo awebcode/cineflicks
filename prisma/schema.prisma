@@ -43,6 +43,7 @@ model Influencer {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   couponCode  String        @unique
+  image       String?        @default("")
   expireTime  DateTime      @default(now())
   users       User[]        @relation("InfluencerUsers") // Many-to-one relation with users
   userCount   Int           @default(0)                 // Track the number of users using this influencer's code

@@ -63,8 +63,8 @@ export default async function InfluencerDetailsPage({
               <CardTitle className="text-2xl font-semibold p-2">#Influencer Details {influencerId}</CardTitle>
         <CardHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="w-16 h-16">
-              <AvatarImage src={undefined} alt={influencer.name} />
+            <Avatar className="w-24 h-24">
+              <AvatarImage src={influencer.image??""} alt={influencer.name} />
               <AvatarFallback>{influencer.name.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div>

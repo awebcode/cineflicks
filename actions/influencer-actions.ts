@@ -3,7 +3,7 @@ import { influencerSchema, type InfluencerUpdateArgs } from "@/lib/influencer-sc
 import { prisma } from "@/lib/prisma"; // Import Prisma client
 
 // Function to create an influencer
-export async function createInfluencer(username: string, days = 1) {
+export async function createInfluencer(username: string, days = 1,image:string) {
   // Ensure couponCode is the same as the username
   const couponCode = username.toUpperCase().replace(/\s+/g, "-");
 
@@ -26,6 +26,7 @@ export async function createInfluencer(username: string, days = 1) {
       name: username, // You can still store the username as the name if required
       couponCode, // The coupon code will be the same as the username
       expireTime,
+      image
     },
   });
 
@@ -110,6 +111,7 @@ export const getInfluencers = async (query: string, limit: number, cursor: strin
         id: true,
         name: true,
         couponCode: true,
+        image: true,
         expireTime: true,
         users: {
           select: {
@@ -130,6 +132,7 @@ export const getInfluencers = async (query: string, limit: number, cursor: strin
       id: influencer.id,
       name: influencer.name,
       couponCode: influencer.couponCode,
+      image: influencer.image,
       expireTime: influencer.expireTime,
       totalUsers: influencer.users.length, // Calculate the number of users
     }));
@@ -188,15 +191,42 @@ export const deleteInfluencer = async (influencerId: string) => {
  */
 export const updateInfluencer = async (
   influencerId: string,
-  data: InfluencerUpdateArgs
+  data: Partial<InfluencerUpdateArgs>
 ) => {
   try {
-    const { name, expireTime, couponCode } = influencerSchema.parse(data);
-    if (!influencerId)
+    const { couponCode, image, expireTime, name } = data;
+
+    // Ensure influencerId and required fields are provided
+    if (!influencerId) {
       return {
         error: true,
         message: "Influencer ID is required",
       };
+    }
+
+    // Ensure name and couponCode are provided
+    if (!name || !couponCode) {
+      return {
+        error: true,
+        message: "Name and Coupon Code are required fields",
+      };
+    }
+
+    // Handle expireTime logic
+    let expireDate: Date=expireTime as any
+    if (expireTime) {
+      const days = parseInt(expireTime.toString(), 10); // Parse expireTime as integer
+      if (!isNaN(days) && days > 0) {
+        expireDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000); // Convert days to milliseconds
+      } else {
+        return {
+          error: true,
+          message: "Expire time must be a positive number",
+        };
+      }
+    }
+
+    // Update the influencer in the database
     const influencer = await prisma.influencer.update({
       where: {
         id: influencerId,
@@ -204,16 +234,25 @@ export const updateInfluencer = async (
       data: {
         name,
         couponCode,
-        expireTime: new Date(Date.now() + parseInt(expireTime) * 24 * 60 * 60 * 1000), // Convert days to milliseconds
+        image,
+        expireTime: expireDate, // Only update expireTime if valid
       },
     });
+
     return {
       success: true,
       message: "Influencer updated successfully",
       data: influencer,
     };
   } catch (error) {
-    console.log({ error });
+    // Log error in a more structured way
+    if (error instanceof Error) {
+      console.error("Error updating influencer:", error.message);
+      console.error(error.stack);
+    } else {
+      console.error("Unknown error occurred:", error);
+    }
+
     return {
       error: true,
       message: "Influencer update failed",
