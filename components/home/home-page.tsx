@@ -12,7 +12,7 @@ export default async function HomePage({
     <main className="relative overflow-hidden h-full flex flex-col">
       {/* Movie Grid Background */}
       <Image
-        src={image ?? "/campaign_hero_bg.avif"}
+        src={"/campaign_hero_bg.avif"}
         alt="campaign_hero_bg"
         fill
         priority
@@ -39,8 +39,8 @@ export default async function HomePage({
               Complete the below social tasks{" "}
             </p>
             <p className="text-gray-100 text-base max-w-xl mx-auto">
-              Stay connected with us across all our social platforms and be the first to
-              hear about the amazing things we have in store for you!
+              Stay connected with us across all our social platforms and be the
+              first to hear about the amazing things we have in store for you!
             </p>
 
             {/* Referral Code */}

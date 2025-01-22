@@ -10,7 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
 interface HomePageProps {
-  searchParams:Promise<{
+  searchParams: Promise<{
     couponCode: string;
   }>;
 }
@@ -105,7 +105,10 @@ export default async function Home({ searchParams }: HomePageProps) {
           </div>
         </div>
       </nav>
-      <HomePage couponCode={user?.couponCode ?? ""} image={coupon?.image ?? ""} />
+      <HomePage
+        couponCode={user?.couponCode ?? ""}
+        image={coupon?.image ?? ""}
+      />
       <WorkWithUsPage />
       <HowToSetupHelperWallet />
       <WalletStepsImage />
