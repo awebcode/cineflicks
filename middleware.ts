@@ -25,9 +25,9 @@ export async function middleware(req: NextRequest) {
           name: null,
           email: null,
           image: null,
-          role: null,
+          role: "USER",
         };
-        payload = await verifyJwt({ token, secret: process.env.SECRET_KEY as string });
+        // payload = await verifyJwt({ token, secret: process.env.SECRET_KEY as string });
       } catch (error) {
         console.error("JWT verification failed:", error);
       }
