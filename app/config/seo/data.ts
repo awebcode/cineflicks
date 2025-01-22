@@ -25,7 +25,7 @@ export const defaultSEOdata: Metadata = {
     title: "Cineflicks - Unlimited Entertainment",
     description:
       "Cineflicks offers an extensive library of movies and TV shows. Watch anytime, anywhere on any device.",
-    url: "https://cineflicks.vercel.app", // Replace with the actual Cineflicks URL
+    url: "https://cineflics-campaign.vercel.app", // Replace with the actual Cineflicks URL
     siteName: "Cineflicks",
     locale: "en",
     type: "website",
@@ -53,28 +53,32 @@ export const defaultSEOdata: Metadata = {
   },
   icons: [
     {
-      url: "https://cineflicks.vercel.app/og-image.png", // Replace with actual Cineflicks icon URL
+      rel: "icon",
+      url: "/apple-touch-icon.png",
+    },
+    {
+      url: "https://cineflics-campaign.vercel.app/og-image.png", // Replace with actual Cineflicks icon URL
       type: "image/png",
       sizes: "512x512",
     },
     {
-      url: "https://cineflicks.vercel.app/favicon.ico", // Replace with actual favicon URL
+      url: "https://cineflics-campaign.vercel.app/favicon.ico", // Replace with actual favicon URL
       type: "image/x-icon",
       sizes: "16x16",
     },
   ],
   applicationName: "Cineflicks",
   authors: [
-    { name: "Cineflicks Team", url: "https://cineflicks.vercel.app" }, // Replace with actual team URL
+    { name: "Cineflicks Team", url: "https://cineflics-campaign.vercel.app" }, // Replace with actual team URL
   ],
   verification: {
     google: "google-site-verification=9876543210", // Replace with actual verification code
     yandex: "yandex-verification=9876543210", // Replace with actual verification code
     yahoo: "y_key=9876543210", // Replace with actual verification code
   },
-  manifest: "https://cineflicks.vercel.app/manifest.webmanifest", // Replace with actual manifest URL
+  manifest: "https://cineflics-campaign.vercel.app/manifest.webmanifest", // Replace with actual manifest URL
   appLinks: {
-    web: [{ url: "https://cineflicks.vercel.app", should_fallback: true }],
+    web: [{ url: "https://cineflics-campaign.vercel.app", should_fallback: true }],
   },
   creator: "Cineflicks",
   category: "movies, entertainment, streaming",

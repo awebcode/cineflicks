@@ -65,7 +65,7 @@ import { Role } from "@prisma/client";
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer","/partner"];
+const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer"];
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"];
 const AUTHENTICATED_ROUTES = ["/profile", "/profile/[id]"];
 const verifyJwt = async ({ token, secret }: { token: string; secret: string }) => {
