@@ -26,8 +26,7 @@ export const encodeJwt = async ({
 
 // Utility function to decode and verify a JWT
 export const verifyJwt = async ({ token, secret }: { token: string; secret: string }) => {
-  if (!token || !secret) return null;
-  const secretKey = new TextEncoder().encode(secret);
+  const secretKey = new TextEncoder().encode(secret||"");
   try {
     const { payload } = await jose.jwtVerify(token, secretKey);
     return payload
