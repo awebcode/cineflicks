@@ -2,9 +2,9 @@ import { Role } from "@prisma/client";
 import { NextResponse, type NextRequest } from "next/server";
 import { verifyJwt } from "./lib/utils";
 
-const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer"]; // Admin-specific routes
-const PUBLIC_ROUTES = ["/sign-in", "/sign-up"]; // Public routes
-const AUTHENTICATED_ROUTES = ["/profile", "/profile/[id]"]; // Authenticated routes
+const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer"];
+const PUBLIC_ROUTES = ["/sign-in", "/sign-up"];
+const AUTHENTICATED_ROUTES = ["/profile", "/profile/[id]"];
 
 export async function middleware(req: NextRequest) {
   try {
@@ -59,7 +59,6 @@ export async function middleware(req: NextRequest) {
   }
 }
 
-// Middleware configuration to match all routes except API, static, and images
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
