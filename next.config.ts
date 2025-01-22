@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "300mb", // Increase to 300 MB
     },
+    middlewarePrefetch: "flexible",
   },
 
   typescript: {

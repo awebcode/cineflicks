@@ -68,19 +68,23 @@ import { jwtVerify } from "jose";
 const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer","/partner"];
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"];
 const AUTHENTICATED_ROUTES = ["/profile", "/profile/[id]"];
+const verifyJwt = async ({ token, secret }: { token: string; secret: string }) => {
+  const secretKey = new TextEncoder().encode(secret || "");
+  try {
+    const { payload } = await jwtVerify(token, secretKey);
+    return payload;
+  } catch (error: any) {
+    return null; // In case of verification failure
+  }
+};
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("session_token")?.value;
-  let payload = null;
 
-  if (token) {
-    try {
-      const secret = new TextEncoder().encode(process.env.AUTH_SECRET || "");
-      ({ payload } = await jwtVerify(token, secret));
-    } catch (error) {
-      console.error("JWT verification failed:", error);
-    }
-  }
+  
+  const payload = token
+    ? await verifyJwt({ token, secret: process.env.AUTH_SECRET! })
+    : null;
 
   const isLoggedIn = !!payload?.id;
   const isAdmin = payload?.role === Role.ADMIN;
