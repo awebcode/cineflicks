@@ -135,9 +135,7 @@ function SocialCard({
   const task = getTaskByPlatform(platform) || getTaskById(id); //id
 
   return (
-    <Card
-      className={cn(className, "bg-[#2A2D35] w-full  border-none text-white")}
-    >
+    <Card className={cn(className, "bg-[#2A2D35] w-full  border-none text-white")}>
       <CardHeader>
         <h1 className="text-2xl font-semibold">Task #{id}</h1>
         <div className="flex justify-between items-center">
@@ -171,8 +169,7 @@ function SocialCard({
       </CardHeader>
       <CardContent className="space-y-4">
         <h2 className="text-xl font-semibold">
-          Follow Cineflicks on{" "}
-          <span className="text-[#F5A64C]">{platform}</span>
+          Follow Cineflicks on <span className="text-[#F5A64C]">{platform}</span>
         </h2>
         <p className="text-gray-400">{description}</p>
         <Form {...form}>
@@ -242,7 +239,7 @@ function SocialCard({
                 <Button
                   type="button"
                   className="flex-1 bg-[#F5A64C] hover:bg-[#E89539] text-black font-medium"
-                  onClick={() => signIn("google", { callbackUrl: "/" })}
+                  onClick={async () => await signIn("google")}
                 >
                   Login to follow
                 </Button>

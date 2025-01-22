@@ -64,6 +64,7 @@
 import { Role } from "@prisma/client";
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import { verifyJwt } from "./lib/utils";
 
 const ADMIN_ROUTES = ["/admin", "/dashboard", "/influencer","/partner"];
 const PUBLIC_ROUTES = ["/sign-in", "/sign-up"];
@@ -75,8 +76,7 @@ export async function middleware(req: NextRequest) {
 
   if (token) {
     try {
-      const secret = new TextEncoder().encode(process.env.AUTH_SECRET || "");
-      ({ payload } = await jwtVerify(token, secret));
+       payload = await verifyJwt({ token, secret: process.env.AUTH_SECRET as string });
     } catch (error) {
       console.error("JWT verification failed:", error);
     }
