@@ -19,8 +19,8 @@ export default async function HomePage({
         className="absolute inset-0 object-cover"
       />
       {/* Dark overlay for background image */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/50 to-black/45 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/30 to-black/45 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/30 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/30 to-black/30 pointer-events-none" />
 
       {/* Content */}
       <div className="container w-full mx-auto px-4 relative z-10">
