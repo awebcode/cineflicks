@@ -12,11 +12,22 @@ export async function middleware(req: NextRequest) {
     let payload = null;
 
     if (token) {
+      
+      // await verifyJwt({
+      //     token,
+      //     secret: process.env.AUTH_SECRET || "",
+      //   });
+      
       try {
-        payload = await verifyJwt({
-          token,
-          secret: process.env.AUTH_SECRET || "",
-        });
+        
+        payload = {
+          id: null,
+          name: null,
+          email: null,
+          image: null,
+          role: null,
+        };
+        payload = await verifyJwt({ token, secret: process.env.SECRET_KEY as string });
       } catch (error) {
         console.error("JWT verification failed:", error);
       }
